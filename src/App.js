@@ -5,17 +5,19 @@ import Footer from "./Pages/Footer/Footer";
 import Home from "./Pages/Home/Home";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Login from "./Pages/Login/Login";
 
 
 function App() {
   return (
-    <>
+    <section className="">
       <Header />
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login/>}/>
       </Routes>
       <Footer/>
-    </>
+    </section>
   );
 }
 

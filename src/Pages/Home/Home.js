@@ -1,10 +1,12 @@
 import React from "react";
 import Banner from "../Banner/Banner";
+import HomeItems from "../HomeItems/HomeItems";
 
 const Home = () => {
   return (
-    <main className="h-screen">
-      <Banner />
+    <main className="container mx-auto">
+      {/* <Banner /> */}
+      <HomeItems />
     </main>
   );
 };

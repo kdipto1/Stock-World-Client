@@ -1,8 +1,17 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+  const menuItems = (
+    <>
+      <li>
+        <NavLink to="/login">Login</NavLink>
+      </li>
+    </>
+  );
   return (
-    <div className="navbar bg-base-200">
+    <div className="navbar bg-slate-200 sticky top-0 z-50 font-semibold">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex="0" className="btn btn-ghost lg:hidden">
@@ -53,9 +62,12 @@ const Header = () => {
             <li>
               <a>Item 3</a>
             </li>
+            {menuItems}
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">StockWorld</a>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">
+          StockWorld
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal p-0">
@@ -87,6 +99,7 @@ const Header = () => {
           <li>
             <a>Item 3</a>
           </li>
+          {menuItems}
         </ul>
       </div>
       <div className="navbar-end">
