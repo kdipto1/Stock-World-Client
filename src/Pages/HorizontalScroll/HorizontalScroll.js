@@ -55,7 +55,7 @@ const HorizontalScroll = () => {
       // onMouseEnter={enableScroll}
       // onMouseLeave={enableScroll}
     >
-      <h2 className="text-4xl font-bold text-center text-cyan-800">Partnered Companies</h2>
+      <h2 className="text-2xl font-bold text-center text-white bg-cyan-800 p-1">Valuable Partners</h2>
       <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
         {images.map((image, index) => (
           <div key={index} className="w-64 p-10">
