@@ -5,7 +5,7 @@ import HomeItems from "../HomeItems/HomeItems";
 const Home = () => {
   return (
     <main className="container mx-auto">
-      {/* <Banner /> */}
+      <Banner />
       <HomeItems />
     </main>
   );

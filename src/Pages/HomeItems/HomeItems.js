@@ -13,10 +13,10 @@ const HomeItems = () => {
   return (
     <section className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {items?.map((item) => (
-        <div key={item?._id} className="card card-compact w-96 bg-base-200 shadow-lg glass">
+        <div key={item?._id} className="mx-auto card card-compact w-80 bg-base-200 shadow-lg">
           <figure>
             <img
-              className="object-contain"
+              className="w-full"
               src={item?.image}
               alt="Graphics Cards"
             />

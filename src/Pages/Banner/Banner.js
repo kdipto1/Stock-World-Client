@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import cover from "../../Images/Cover/cover.jpg"
-import cover1 from "../../Images/Cover/cover1.jpg"
+import cover from "../../Images/Cover/cover.png"
+import cover1 from "../../Images/Cover/cover1.png"
 
 const Banner = () => {
   const settings = {
@@ -13,13 +13,13 @@ const Banner = () => {
   };
   
   return (
-    <section>
+    <section className="mt-6">
       <Slider {...settings}>
         <div>
-          <img className="object-cover" src={cover} alt="" />
+          <img className="w-full" src={cover} alt="" />
         </div>
         <div>
-          <img src={cover1} alt="" />
+          <img className="w-full" src={cover1} alt="" />
         </div>
       </Slider>
     </section>
