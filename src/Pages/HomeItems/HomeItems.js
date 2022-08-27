@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 const HomeItems = () => {
   const { data: items, isLoading } = useQuery(["homeItems"], () =>
@@ -43,14 +44,16 @@ const HomeItems = () => {
                 {item?.supplier}
               </p>
               <div className="card-actions justify-end">
-                <button className="btn btn-primary">Update Stock</button>
+                <Link to="" className="btn">Update Stock</Link>
               </div>
             </div>
           </div>
         ))}
       </div>
       <div className="mt-6 flex justify-center">
-        <button className="btn btn-primary btn-wide">Manage Inventory</button>
+        <Link to="/manageInventory" className="btn btn-primary btn-wide">
+          Manage Inventory
+        </Link>
       </div>
     </section>
   );

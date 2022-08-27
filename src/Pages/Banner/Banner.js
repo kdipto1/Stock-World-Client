@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import cover from "../../Images/Cover/cover.png"
-import cover1 from "../../Images/Cover/cover1.png"
+import cover from "../../Images/Cover/cover.png";
+import cover1 from "../../Images/Cover/cover1.png";
 
 const Banner = () => {
   const settings = {
@@ -10,10 +10,15 @@ const Banner = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    cssEase: "linear",
+    pauseOnHover: true,
+    fade: true,
   };
-  
+
   return (
-    <section className="mt-6">
+    <section className="">
       <Slider {...settings}>
         <div>
           <img className="w-full" src={cover} alt="" />
