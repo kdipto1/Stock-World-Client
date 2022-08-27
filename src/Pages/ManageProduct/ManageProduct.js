@@ -18,28 +18,51 @@ const ManageProduct = () => {
   if (isLoading) {
     return;
   }
-  console.log(product);
   /* Delivery Product function */
   const handleDelivery = (event) => {
     event.preventDefault();
     if (product.quantity <= 0) {
-      alert("Product not available. Please Restock!");
+      toast.loading("Product not available. Please Restock!");
       return;
     }
     let quantity = parseInt(product.quantity) - 1;
-    console.log(quantity);
     const url = `http://localhost:5000/inventory/${params.id}`;
     try {
       axios.put(url, { quantity: quantity }).then((response) => {
         const { data } = response;
         if (data) {
-          console.log(data);
-          toast.success("Product Delivered",{position:"top-right"});
+          toast.success("Product Delivered", { position: "top-right" });
           refetch();
         }
       });
     } catch (error) {
       console.log(error);
+      toast.error(error?.message)
+    }
+  };
+  const handleRestock = (event) => {
+    event.preventDefault();
+    if (!event.target.quantity.value) {
+      toast("Please put the quantity");
+    }
+    let quantity =
+      parseInt(product?.quantity) + parseInt(event.target.quantity.value);
+    console.log(quantity);
+    const url = `http://localhost:5000/inventory/${params.id}`;
+    if (parseInt(event.target.quantity.value) >= 0) {
+      try {
+        axios.put(url, { quantity: quantity }).then((response) => {
+          const { data } = response;
+          if (data) {
+            toast.success("Stock updated");
+            refetch();
+            event.target.reset();
+          }
+        });
+      } catch (error) {
+        toast.error(error?.message);
+        console.log(error);
+      }
     }
   };
   return (
@@ -69,6 +92,22 @@ const ManageProduct = () => {
               Deliver
             </button>
           </div>
+        </div>
+      </div>
+      {/* +++++++++++ */}
+      <div class="mt-20 card bg-base-100 shadow-xl mx-auto">
+        <div class="card-body items-center text-center">
+          <h2 class="card-title">Update Stock Quantity for {product?.name}</h2>
+          <form onSubmit={handleRestock}>
+            <input
+              className="input input-bordered input-primary w-full max-w-xs"
+              type="number"
+              placeholder="update stock"
+              name="quantity"
+            />
+            <br />
+            <input className="btn mt-4" type="submit" value="Update Stock" />
+          </form>
         </div>
       </div>
     </section>

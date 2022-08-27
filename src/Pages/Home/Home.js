@@ -6,7 +6,7 @@ import HorizontalScroll from "../HorizontalScroll/HorizontalScroll";
 
 const Home = () => {
   return (
-    <main className=" mx-auto overflow-x-hidden">
+    <main className="overflow-x-hidden">
       <Banner />
       <HorizontalScroll />
       <HomeItems />

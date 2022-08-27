@@ -2,7 +2,7 @@ import React from "react";
 
 const HomeContact = () => {
   return (
-    <section className="mt-16">
+    <section className="mt-16 container mx-auto">
       <h2 className="text-2xl font-bold text-center text-cyan-800">Contact</h2>
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <figure>
