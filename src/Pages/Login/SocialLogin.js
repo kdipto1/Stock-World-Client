@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { ImGoogle3 } from "react-icons/im";
 import auth from '../../firebase.init';
+import toast from 'react-hot-toast';
 
 
 const SocialLogin = () => {
@@ -19,7 +20,7 @@ const SocialLogin = () => {
       return;
     }
     if (error) {
-      alert(error?.message);
+      toast.error(error?.message);
     }
   }, [from, user, navigate, error, loading]);
   return (
@@ -29,8 +30,7 @@ const SocialLogin = () => {
         className="btn"
       >
         {" "}
-        <ImGoogle3 className="" />
-        Google SignIn
+        Continue With google
       </button>
     </section>
   );

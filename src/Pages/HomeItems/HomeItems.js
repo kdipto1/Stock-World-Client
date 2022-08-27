@@ -13,7 +13,7 @@ const HomeItems = () => {
   console.log(items);
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-bold text-center text-white bg-cyan-800 p-1">
+      <h2 className="text-4xl font-bold text-center text-cyan-800">
         Products
       </h2>
       <div className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -44,14 +44,16 @@ const HomeItems = () => {
                 {item?.supplier}
               </p>
               <div className="card-actions justify-end">
-                <Link to="" className="btn">Update Stock</Link>
+                <Link to={`/manageProduct/${item._id}`} className="btn">
+                  Update Stock
+                </Link>
               </div>
             </div>
           </div>
         ))}
       </div>
       <div className="mt-6 flex justify-center">
-        <Link to="/manageInventory" className="btn btn-primary btn-wide">
+        <Link to="/manageInventory" className="btn btn-wide">
           Manage Inventory
         </Link>
       </div>

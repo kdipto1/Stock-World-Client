@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "./HorizontalScroll.css"
+import "./HorizontalScroll.css";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import RightArrowIcon from "../../Images/Icons/right-arrow.png";
 import LeftArrowIcon from "../../Images/Icons/left-arrow.png";
@@ -50,19 +50,19 @@ const HorizontalScroll = () => {
   ];
 
   return (
-    <section
-      className="mt-16"
-      // onMouseEnter={enableScroll}
-      // onMouseLeave={enableScroll}
-    >
-      <h2 className="text-2xl font-bold text-center text-white bg-cyan-800 p-1">Valuable Partners</h2>
-      <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
-        {images.map((image, index) => (
-          <div key={index} className="w-64 p-10">
-            <img src={image} alt="" />
-          </div>
-        ))}
-      </ScrollMenu>
+    <section className="mt-16">
+      <div className="container mx-auto">
+        <h2 className="text-4xl font-bold text-center text-cyan-800">
+          Valuable Partners
+        </h2>
+        <ScrollMenu className="" LeftArrow={LeftArrow} RightArrow={RightArrow}>
+          {images.map((image, index) => (
+            <div key={index} className="w-64 p-10">
+              <img src={image} alt="" />
+            </div>
+          ))}
+        </ScrollMenu>
+      </div>
     </section>
   );
 };
