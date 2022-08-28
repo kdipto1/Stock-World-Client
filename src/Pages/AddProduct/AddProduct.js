@@ -45,7 +45,7 @@ const AddProduct = () => {
       });
   };
   return (
-    <section className="mt-10 h-screen container mx-auto">
+    <section className="mt-10 container mx-auto">
       <div className="card  bg-base-100 shadow-xl">
         <div className="card-body items-center text-center">
           <h2 className="card-title">Add New Product:</h2>

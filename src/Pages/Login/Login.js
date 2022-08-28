@@ -34,14 +34,14 @@ const Login = () => {
     }
     if (user || user1) {
       toast("Login Successful");
-      console.log(user1);
+      // console.log(user1);
       const url = "http://localhost:5000/login";
       axios
         .post(url, { email: user1?.email })
         .then((response) => {
           const { data } = response;
           localStorage.setItem("accessToken", data.token);
-          console.log(data);
+          // console.log(data);
           navigate(from, { replace: true });
         })
         .catch(function (error) {

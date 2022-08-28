@@ -33,7 +33,10 @@ const ManageProduct = () => {
       axios.put(url, { quantity: quantity }).then((response) => {
         const { data } = response;
         if (data) {
-          toast.success("Product Delivered", { position: "top-right",duration:"80" });
+          toast.success("Product Delivered", {
+            position: "top-right",
+            duration: "80",
+          });
           refetch();
         }
       });
@@ -52,6 +55,10 @@ const ManageProduct = () => {
     let quantity =
       parseInt(product?.quantity) + parseInt(event.target.quantity.value);
     const url = `http://localhost:5000/inventory/${params.id}`;
+    if (parseInt(event.target.quantity.value) <= 0) {
+      toast.error("Enter a positive number");
+      return;
+    }
     if (parseInt(event.target.quantity.value) >= 0) {
       try {
         axios.put(url, { quantity: quantity }).then((response) => {
