@@ -9,6 +9,9 @@ const Header = () => {
         <NavLink to="/manageInventory">Manage Inventory</NavLink>
       </li>
       <li>
+        <NavLink to="/addProduct">Add Product</NavLink>
+      </li>
+      <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
       <li>
@@ -17,7 +20,7 @@ const Header = () => {
     </>
   );
   return (
-    <div className="navbar bg-black text-white  top-0 z-50 font-semibold">
+    <div className="navbar  text-white  top-0 z-50 font-semibold">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex="0" className="btn btn-ghost lg:hidden">

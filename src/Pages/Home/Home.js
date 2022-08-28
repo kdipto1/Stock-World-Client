@@ -8,8 +8,8 @@ const Home = () => {
   return (
     <main className="overflow-x-hidden">
       <Banner />
-      <HorizontalScroll />
       <HomeItems />
+      <HorizontalScroll />
       <HomeContact />
     </main>
   );

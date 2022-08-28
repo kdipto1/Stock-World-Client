@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import toast from 'react-hot-toast';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import auth from '../../firebase.init';
-import sign from '../../Images/Login/sign.svg';
-import SocialLogin from '../Login/SocialLogin';
+import React, { useEffect } from "react";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import toast from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import auth from "../../firebase.init";
+import sign from "../../Images/Login/sign.svg";
+import SocialLogin from "../Login/SocialLogin";
 
 const Register = () => {
   const [createUserWithEmailAndPassword, user, loading, error] =
@@ -33,12 +33,14 @@ const Register = () => {
   };
   return (
     <section className="h-screen container mx-auto mt-20">
-      <div class="card lg:card-side bg-base-100 shadow-xl mx-auto">
+      <div className="card lg:card-side bg-base-100 shadow-xl mx-auto">
         <figure>
           <img className="w-4/5" src={sign} alt="Album" />
         </figure>
-        <div class="card-body my-auto text-center">
-          <h2 class="card-title text-2xl font-bold mx-auto">Please Register</h2>
+        <div className="card-body my-auto text-center">
+          <h2 className="card-title text-2xl font-bold mx-auto">
+            Please Register
+          </h2>
           {/* +++++++ */}
           <form onSubmit={handRegister}>
             <input
@@ -46,7 +48,7 @@ const Register = () => {
               name="email"
               placeholder="Your Email"
               required
-              class="input input-bordered input-primary w-full max-w-xs"
+              className="input input-bordered input-primary w-full max-w-xs"
             />
             <br />
             <input
@@ -54,7 +56,7 @@ const Register = () => {
               name="password"
               placeholder="Your Password"
               required
-              class="input input-bordered input-primary w-full max-w-xs my-4"
+              className="input input-bordered input-primary w-full max-w-xs my-4"
             />
 
             <br />

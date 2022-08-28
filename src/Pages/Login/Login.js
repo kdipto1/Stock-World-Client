@@ -35,7 +35,7 @@ const Login = () => {
     if (user || user1) {
       toast("Login Successful");
       console.log(user1);
-      const url = "https://server-11-11.herokuapp.com/login";
+      const url = "http://localhost:5000/login";
       axios
         .post(url, { email: user1?.email })
         .then((response) => {
@@ -45,6 +45,7 @@ const Login = () => {
           navigate(from, { replace: true });
         })
         .catch(function (error) {
+          toast.error(error.message)
           console.log(error);
         });
     }
@@ -68,12 +69,14 @@ const Login = () => {
   };
   return (
     <section className="h-screen container mx-auto mt-20">
-      <div class="card lg:card-side bg-base-100 shadow-xl mx-auto">
+      <div className="card lg:card-side bg-base-100 shadow-xl mx-auto">
         <figure>
           <img className="" src={login1} alt="Album" />
         </figure>
-        <div class="card-body my-auto text-center">
-          <h2 class="card-title text-2xl font-bold mx-auto">Please Login</h2>
+        <div className="card-body my-auto text-center">
+          <h2 className="card-title text-2xl font-bold mx-auto">
+            Please Login
+          </h2>
           {/* +++++++ */}
           <form onSubmit={handleLogin}>
             <input
@@ -82,7 +85,7 @@ const Login = () => {
               ref={emailRef}
               placeholder="Your Email"
               required
-              class="input input-bordered input-primary w-full max-w-xs"
+              className="input input-bordered input-primary w-full max-w-xs"
             />
             <br />
             <input
@@ -90,7 +93,7 @@ const Login = () => {
               name="password"
               placeholder="Your Password"
               required
-              class="input input-bordered input-primary w-full max-w-xs my-4"
+              className="input input-bordered input-primary w-full max-w-xs my-4"
             />
             <br />
             <input type="submit" value="Login" className="btn mt-2" />
@@ -103,10 +106,7 @@ const Login = () => {
           </h1>
           <h1 className="">
             Forget password?{" "}
-            <span
-              className="text-primary"
-              onClick={resetPassword}
-            >
+            <span className="text-primary" onClick={resetPassword}>
               Reset Password
             </span>
           </h1>

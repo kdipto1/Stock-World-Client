@@ -13,7 +13,6 @@ import msi from "../../Images/Icons/msi.svg";
 import pny from "../../Images/Icons/pny.svg";
 import samsung from "../../Images/Icons/samsung.svg";
 import sapphire from "../../Images/Icons/sapphire.svg";
-import usePreventBodyScroll from "./usePreventBodyScroll";
 
 const LeftArrow = () => {
   const { scrollPrev } = useContext(VisibilityContext);
@@ -36,7 +35,6 @@ const RightArrow = () => {
 };
 
 const HorizontalScroll = () => {
-  const { disableScroll, enableScroll } = usePreventBodyScroll();
   const images = [
     amd,
     asus,
@@ -52,7 +50,7 @@ const HorizontalScroll = () => {
   return (
     <section className="mt-16">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold text-center text-cyan-800">
+        <h2 className="text-4xl font-bold text-center">
           Valuable Partners
         </h2>
         <ScrollMenu className="" LeftArrow={LeftArrow} RightArrow={RightArrow}>

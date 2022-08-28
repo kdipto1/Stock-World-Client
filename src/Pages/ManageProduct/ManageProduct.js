@@ -22,7 +22,9 @@ const ManageProduct = () => {
   const handleDelivery = (event) => {
     event.preventDefault();
     if (product.quantity <= 0) {
-      toast.loading("Product not available. Please Restock!");
+      toast.loading("Product not available. Please Restock!", {
+        duration: "80",
+      });
       return;
     }
     let quantity = parseInt(product.quantity) - 1;
@@ -31,23 +33,24 @@ const ManageProduct = () => {
       axios.put(url, { quantity: quantity }).then((response) => {
         const { data } = response;
         if (data) {
-          toast.success("Product Delivered", { position: "top-right" });
+          toast.success("Product Delivered", { position: "top-right",duration:"80" });
           refetch();
         }
       });
     } catch (error) {
       console.log(error);
-      toast.error(error?.message)
+      toast.error(error?.message);
     }
   };
   const handleRestock = (event) => {
     event.preventDefault();
     if (!event.target.quantity.value) {
-      toast("Please put the quantity");
+      toast("Please put the quantity", {
+        duration: "80",
+      });
     }
     let quantity =
       parseInt(product?.quantity) + parseInt(event.target.quantity.value);
-    console.log(quantity);
     const url = `http://localhost:5000/inventory/${params.id}`;
     if (parseInt(event.target.quantity.value) >= 0) {
       try {
@@ -95,9 +98,11 @@ const ManageProduct = () => {
         </div>
       </div>
       {/* +++++++++++ */}
-      <div class="mt-20 card bg-base-100 shadow-xl mx-auto">
-        <div class="card-body items-center text-center">
-          <h2 class="card-title">Update Stock Quantity for {product?.name}</h2>
+      <div className="mt-20 card bg-base-100 shadow-xl mx-auto">
+        <div className="card-body items-center text-center">
+          <h2 className="card-title">
+            Update Stock Quantity for {product?.name}
+          </h2>
           <form onSubmit={handleRestock}>
             <input
               className="input input-bordered input-primary w-full max-w-xs"

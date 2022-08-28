@@ -10,17 +10,16 @@ const HomeItems = () => {
   if (isLoading) {
     return;
   }
-  console.log(items);
   return (
-    <section className="mt-10">
-      <h2 className="text-4xl font-bold text-center text-cyan-800">
+    <section className="mt-10 container mx-auto">
+      <h2 className="text-4xl font-bold text-center ">
         Products
       </h2>
       <div className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items?.map((item) => (
           <div
             key={item?._id}
-            className="mx-auto card card-compact w-80 bg-base-200 shadow-lg"
+            className="mx-auto card card-compact bg-base-200 shadow-lg"
           >
             <figure>
               <img className="w-full" src={item?.image} alt="Graphics Cards" />
