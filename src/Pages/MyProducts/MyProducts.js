@@ -1,20 +1,46 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
+import { signOut } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import auth from "../../firebase.init";
 
-const ManageInventory = () => {
-  const {
-    data: inventoryItems,
-    isLoading,
-    refetch,
-  } = useQuery(["manageInventory"], () =>
-    fetch("http://localhost:5000/inventory").then((res) => res.json())
-  );
-  if (isLoading) {
-    return;
-  }
+const MyProducts = () => {
+  const [user, loading, error] = useAuthState(auth);
+  const [myItems, setMyItems] = useState([]);
+  const [newItems, setNewItems] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+    const getMyItems = async () => {
+      const email = user?.email;
+      const url = `http://localhost:5000/inventoryUser?email=${email}`;
+      try {
+        const { data } = await axios.get(url, {
+          headers: {
+            Authorization: `${user?.email} ${localStorage.getItem(
+              "accessToken"
+            )}`,
+          },
+        });
+        console.log(data);
+        setMyItems(data);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status === 403) {
+          toast(error.response.data.message);
+          signOut(auth);
+          navigate("/login");
+        }
+      }
+    };
+    getMyItems();
+  }, [user, newItems, navigate, loading]);
+
   const deleteItem = async (id) => {
     const verify = window.confirm("Delete");
     if (!verify) {
@@ -26,7 +52,7 @@ const ManageInventory = () => {
           const { data } = response;
           if (data) {
             toast.success("Item Deleted");
-            refetch();
+            setNewItems(data);
           }
         });
       } catch (error) {
@@ -56,7 +82,7 @@ const ManageInventory = () => {
               <th>Manage Product</th>
             </tr>
           </thead>
-          {inventoryItems?.map((item) => (
+          {myItems?.map((item) => (
             <tbody key={item?._id}>
               <tr className="hover">
                 <td>{item?._id}</td>
@@ -98,4 +124,4 @@ const ManageInventory = () => {
   );
 };
 
-export default ManageInventory;
+export default MyProducts;

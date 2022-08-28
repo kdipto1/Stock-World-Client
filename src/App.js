@@ -14,6 +14,7 @@ import Register from "./Pages/Register/Register";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import React from "react";
 import AddProduct from "./Pages/AddProduct/AddProduct";
+import MyProducts from "./Pages/MyProducts/MyProducts";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/manageProduct/:id" element={<ManageProduct />} />
         <Route path="/manageInventory" element={<ManageInventory />} />
-        <Route path="/addProduct" element={<AddProduct/>} />
+        <Route path="/addProduct" element={<AddProduct />} />
+        <Route path="/myProducts" element={<MyProducts />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />

@@ -33,7 +33,7 @@ const Login = () => {
       return;
     }
     if (user || user1) {
-      toast("Login Successful");
+      toast.success("Login Successful");
       // console.log(user1);
       const url = "http://localhost:5000/login";
       axios
@@ -45,7 +45,7 @@ const Login = () => {
           navigate(from, { replace: true });
         })
         .catch(function (error) {
-          toast.error(error.message)
+          toast.error(error.message);
           console.log(error);
         });
     }

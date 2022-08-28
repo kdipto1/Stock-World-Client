@@ -1,8 +1,13 @@
+import { signOut } from "firebase/auth";
 import React from "react";
+import  toast  from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
+import auth from "../../firebase.init";
+
 
 const Header = () => {
+  // let toastS = toast.success("SignOut Successful");
   const menuItems = (
     <>
       <li>
@@ -12,6 +17,9 @@ const Header = () => {
         <NavLink to="/addProduct">Add Product</NavLink>
       </li>
       <li>
+        <NavLink to="/myProducts">My Product</NavLink>
+      </li>
+      <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
       </li>
       <li>
@@ -19,6 +27,7 @@ const Header = () => {
       </li>
     </>
   );
+  
   return (
     <div className="navbar  text-white  top-0 z-50 font-semibold">
       <div className="navbar-start">
@@ -54,7 +63,12 @@ const Header = () => {
         <ul className="menu menu-horizontal p-0">{menuItems}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Get started</a>
+        <button
+          onClick={() => signOut(auth, toast.success("SignOut Successful"))}
+          className="btn"
+        >
+          Sign Out
+        </button>
       </div>
     </div>
   );
