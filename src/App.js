@@ -15,6 +15,7 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import React from "react";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import MyProducts from "./Pages/MyProducts/MyProducts";
+import RequireAuth from "./Pages/RequireAuth/RequireAuth";
 
 function App() {
   return (
@@ -23,10 +24,38 @@ function App() {
       <Routes>
         <Route index path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/manageProduct/:id" element={<ManageProduct />} />
-        <Route path="/manageInventory" element={<ManageInventory />} />
-        <Route path="/addProduct" element={<AddProduct />} />
-        <Route path="/myProducts" element={<MyProducts />} />
+        <Route
+          path="/manageProduct/:id"
+          element={
+            <RequireAuth>
+              <ManageProduct />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/manageInventory"
+          element={
+            <RequireAuth>
+              <ManageInventory />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/addProduct"
+          element={
+            <RequireAuth>
+              <AddProduct />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/myProducts"
+          element={
+            <RequireAuth>
+              <MyProducts />
+            </RequireAuth>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
