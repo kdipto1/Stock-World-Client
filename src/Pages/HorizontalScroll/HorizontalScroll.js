@@ -48,15 +48,15 @@ const HorizontalScroll = () => {
   ];
 
   return (
-    <section className="mt-16">
+    <section className="mt-16 bg-white">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold text-center">
+        <h2 className="text-4xl font-bold text-center text-primary">
           Valuable Partners
         </h2>
         <ScrollMenu className="" LeftArrow={LeftArrow} RightArrow={RightArrow}>
           {images.map((image, index) => (
             <div key={index} className="w-64 p-10">
-              <img src={image} alt="" />
+              <img  src={image} alt="" />
             </div>
           ))}
         </ScrollMenu>

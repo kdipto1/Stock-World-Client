@@ -1,5 +1,5 @@
 import React from "react";
-import contact from '../../Images/Login/contact.svg';
+import contact from "../../Images/Login/contact.svg";
 
 const HomeContact = () => {
   return (
@@ -17,19 +17,19 @@ const HomeContact = () => {
             <input
               type="text"
               placeholder="Your Name"
-              class="input input-bordered input-primary w-full max-w-xs"
+              className="input input-bordered input-primary w-full max-w-xs"
             />
             <br />
             <input
               type="text"
               placeholder="Your Email"
-              class="input input-bordered input-primary w-full max-w-xs my-4"
+              className="input input-bordered input-primary w-full max-w-xs my-4"
             />
             <br />
             <textarea
               cols={42}
               rows={5}
-              class="textarea textarea-primary"
+              className="textarea textarea-primary"
               placeholder="Your Message"
             ></textarea>
             <br />

@@ -1,5 +1,4 @@
-import "./App.css";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import Header from "./Pages/Header/Header";
 import Footer from "./Pages/Footer/Footer";
 import Home from "./Pages/Home/Home";
@@ -16,10 +15,11 @@ import React from "react";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import MyProducts from "./Pages/MyProducts/MyProducts";
 import RequireAuth from "./Pages/RequireAuth/RequireAuth";
+import Blogs from "./Pages/Blogs/Blogs";
 
 function App() {
   return (
-    <section className="">
+    <section>
       <Header />
       <Routes>
         <Route index path="/" element={<Home />} />
@@ -58,6 +58,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/blogs" element={<Blogs/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

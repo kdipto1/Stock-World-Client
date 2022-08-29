@@ -91,6 +91,13 @@ const AddProduct = () => {
               className="input input-bordered input-primary w-full max-w-xs"
             />
             <br />
+            <select className="select select-primary w-full max-w-xs mt-4">
+              <option disabled selected>
+                Select Category
+              </option>
+              <option>Graphics Card</option>
+            </select>
+            <br />
             <textarea
               name="description"
               required
