@@ -1,10 +1,13 @@
 import React from 'react';
-
+import found from '../../Images/Utility/found.png';
 const NotFound = () => {
   return (
-    <div>
-      <h2>Page not found</h2>
-    </div>
+    <section className='container mx-auto'>
+      <div className=''>
+        <h2 className="text-center font-bold text-4xl my-4">Page Not Found</h2>
+        <img className="w-fit mx-auto" src={found} alt="page not found" />
+      </div>
+    </section>
   );
 };
 
