@@ -5,7 +5,9 @@ import { InfinitySpin } from "react-loader-spinner";
 
 const HomeItems = () => {
   const { data: items, isLoading } = useQuery(["homeItems"], () =>
-    fetch("http://localhost:5000/homeInventory").then((res) => res.json())
+    fetch("https://stock-world-server.herokuapp.com/homeInventory").then(
+      (res) => res.json()
+    )
   );
 
   if (isLoading) {
