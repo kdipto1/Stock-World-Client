@@ -60,7 +60,11 @@ const Register = () => {
             />
 
             <br />
-            <input type="submit" value="Register" className="btn" />
+            <input
+              type="submit"
+              value="Register"
+              className="btn btn-wide hover:btn-primary"
+            />
           </form>
           <p className="text-center">
             Already have an account?{" "}
@@ -74,6 +78,7 @@ const Register = () => {
           </p>
           <hr className="w-50 mx-auto" />
           {/* +++++++ */}
+          <div className="divider">OR</div>
           <SocialLogin />
         </div>
       </div>

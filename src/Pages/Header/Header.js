@@ -1,12 +1,16 @@
 import { signOut } from "firebase/auth";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import auth from "../../firebase.init";
 
 const Header = () => {
-  // let toastS = toast.success("SignOut Successful");
+  const [user, loading, error] = useAuthState(auth);
+  if (loading) {
+    return;
+  }
   const menuItems = (
     <>
       <li>
@@ -15,21 +19,15 @@ const Header = () => {
       <li>
         <NavLink to="/addProduct">Add Product</NavLink>
       </li>
-      <li>
-        <NavLink to="/myProducts">My Product</NavLink>
-      </li>
-      <li>
+      {/* <li>
         <NavLink to="/dashboard">Dashboard</NavLink>
-      </li>
+      </li> */}
       <li>
         <NavLink to="/blogs">Blogs</NavLink>
       </li>
-      <li>
-        <NavLink to="/login">Login</NavLink>
-      </li>
     </>
   );
-
+  console.log(user);
   return (
     <div className="navbar  text-white  top-0 z-50 font-semibold">
       <div className="navbar-start">
@@ -79,18 +77,62 @@ const Header = () => {
         <ul className="menu menu-horizontal p-0">{menuItems}</ul>
       </div>
       <div className="navbar-end">
-        <button
-          onClick={() =>
-            signOut(
-              auth,
-              localStorage.removeItem("accessToken"),
-              toast.success("SignOut Successful")
-            )
-          }
-          className="btn"
-        >
-          Sign Out
-        </button>
+        {user ? (
+          <div className="dropdown dropdown-end">
+            <label tabIndex="0" className="">
+              <div className="avatar">
+                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  {user ? (
+                    <img src={user.photoURL} alt="" />
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  )}
+                </div>
+              </div>
+            </label>
+            <ul
+              tabIndex="0"
+              className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+            >
+              <li>
+                <NavLink className="btn hover:btn-primary" to="/myProducts">
+                  My Product
+                </NavLink>
+              </li>
+              <li>
+                <button
+                  onClick={() =>
+                    signOut(
+                      auth,
+                      localStorage.removeItem("accessToken"),
+                      toast.success("SignOut Successful")
+                    )
+                  }
+                  className="btn hover:btn-primary"
+                >
+                  Sign Out
+                </button>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <NavLink className="btn btn-primary btn-circle" to="/login">
+            Login
+          </NavLink>
+        )}
       </div>
     </div>
   );

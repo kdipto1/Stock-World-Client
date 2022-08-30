@@ -96,7 +96,11 @@ const Login = () => {
               className="input input-bordered input-primary w-full max-w-xs my-4"
             />
             <br />
-            <input type="submit" value="Login" className="btn mt-2" />
+            <input
+              type="submit"
+              value="Login"
+              className="btn hover:btn-primary btn-wide mt-2"
+            />
           </form>
           <h1>
             Don't have an account, Please{" "}
@@ -111,6 +115,7 @@ const Login = () => {
             </span>
           </h1>
           {/* +++++++ */}
+          <div className="divider">OR</div>
           <SocialLogin />
         </div>
       </div>

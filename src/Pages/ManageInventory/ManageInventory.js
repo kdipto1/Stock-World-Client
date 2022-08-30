@@ -16,24 +16,20 @@ const ManageInventory = () => {
     return;
   }
   const deleteItem = async (id) => {
-    const verify = window.confirm("Delete");
-    if (!verify) {
-      return;
-    } else {
-      const url = `http://localhost:5000/inventory/${id}`;
-      try {
-        await axios.delete(url, { id }).then((response) => {
-          const { data } = response;
-          if (data) {
-            toast.success("Item Deleted");
-            refetch();
-          }
-        });
-      } catch (error) {
-        toast.error(error.message);
-        console.log(error);
-      }
-    }
+    console.log(id);
+    // const url = `http://localhost:5000/inventory/${id}`;
+    // try {
+    //   await axios.delete(url, { id }).then((response) => {
+    //     const { data } = response;
+    //     if (data) {
+    //       toast.success("Item Deleted");
+    //       refetch();
+    //     }
+    //   });
+    // } catch (error) {
+    //   toast.error(error.message);
+    //   console.log(error);
+    // }
   };
   return (
     <section className="mt-6 container mx-auto">
@@ -58,7 +54,7 @@ const ManageInventory = () => {
           </thead>
           {inventoryItems?.map((item) => (
             <tbody key={item?._id}>
-              <tr className="hover">
+              <tr key={item._id} className="hover">
                 <td>{item?._id}</td>
                 <td>
                   <div className="tooltip" data-tip={item?.name}>
@@ -74,19 +70,46 @@ const ManageInventory = () => {
                     alt="Inventory product images"
                   />
                 </td>
-                <td>
+                <td key={item._id}>
                   <Link
                     to={`/manageProduct/${item?._id}`}
                     className="btn btn-xs btn-primary"
                   >
                     Manage
                   </Link>{" "}
-                  <button
+                  <label
+                    key={item._id}
+                    htmlFor="my-modal-6"
                     className="btn btn-xs btn-warning"
-                    onClick={() => deleteItem(item?._id)}
                   >
                     Delete
-                  </button>
+                  </label>
+                  <input
+                    key={item._id}
+                    type="checkbox"
+                    id="my-modal-6"
+                    className="modal-toggle"
+                  />
+                  <div key={item._id} className="modal modal-bottom sm:modal-middle">
+                    <div key={item._id} className="modal-box">
+                      <h3 className="font-bold text-lg">
+                        Are you sure you want to delete?
+                      </h3>
+                      <div key={item._id} className="modal-action">
+                        <label
+                          key={item._id}
+                          onClick={() => deleteItem(item?._id)}
+                          htmlFor="my-modal-6"
+                          className="btn btn-warning"
+                        >
+                          Yes
+                        </label>
+                        <label htmlFor="my-modal-6" className="btn btn-primary">
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>

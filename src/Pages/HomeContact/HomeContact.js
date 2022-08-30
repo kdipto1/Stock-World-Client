@@ -35,7 +35,7 @@ const HomeContact = () => {
             <br />
             <div className="text-center">
               <input
-                className="btn btn-wide mt-2 "
+                className="btn btn-primary btn-wide mt-2 "
                 type="submit"
                 value="Send"
               />

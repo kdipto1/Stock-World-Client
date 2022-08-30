@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { ImGoogle3 } from "react-icons/im";
 import auth from '../../firebase.init';
 import toast from 'react-hot-toast';
 
@@ -27,7 +26,7 @@ const SocialLogin = () => {
     <section>
       <button
         onClick={() => signInWithGoogle()}
-        className="btn"
+        className="btn btn-wide hover:btn-primary"
       >
         {" "}
         Continue With google

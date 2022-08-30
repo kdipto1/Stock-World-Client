@@ -12,9 +12,7 @@ const HomeItems = () => {
   }
   return (
     <section className="mt-10 container mx-auto">
-      <h2 className="text-4xl font-bold text-center ">
-        Products
-      </h2>
+      <h2 className="text-4xl font-bold text-center ">Products</h2>
       <div className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items?.map((item) => (
           <div
@@ -43,8 +41,25 @@ const HomeItems = () => {
                 {item?.supplier}
               </p>
               <div className="card-actions justify-end">
-                <Link to={`/manageProduct/${item._id}`} className="btn">
-                  Update Stock
+                <Link
+                  to={`/manageProduct/${item._id}`}
+                  className="btn btn-primary"
+                >
+                  Update Stock &nbsp;
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.5 12c0-1.232.046-2.453.138-3.662a4.006 4.006 0 013.7-3.7 48.678 48.678 0 017.324 0 4.006 4.006 0 013.7 3.7c.017.22.032.441.046.662M4.5 12l-3-3m3 3l3-3m12 3c0 1.232-.046 2.453-.138 3.662a4.006 4.006 0 01-3.7 3.7 48.657 48.657 0 01-7.324 0 4.006 4.006 0 01-3.7-3.7c-.017-.22-.032-.441-.046-.662M19.5 12l-3 3m3-3l3 3"
+                    />
+                  </svg>
                 </Link>
               </div>
             </div>
@@ -52,7 +67,7 @@ const HomeItems = () => {
         ))}
       </div>
       <div className="mt-6 flex justify-center">
-        <Link to="/manageInventory" className="btn btn-wide">
+        <Link to="/manageInventory" className="btn btn-primary btn-wide ">
           Manage Inventory
         </Link>
       </div>

@@ -18,6 +18,7 @@ const ManageProduct = () => {
   if (isLoading) {
     return;
   }
+  console.log(product);
   /* Delivery Product function */
   const handleDelivery = (event) => {
     event.preventDefault();
