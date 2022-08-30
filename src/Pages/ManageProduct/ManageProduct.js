@@ -12,7 +12,7 @@ const ManageProduct = () => {
     isLoading,
     refetch,
   } = useQuery(["manageProduct"], () =>
-    fetch(`http://localhost:5000/inventory/${params.id}`).then((res) =>
+    fetch(`https://stock-world-server.herokuapp.com/inventory/${params.id}`).then((res) =>
       res.json()
     )
   );
@@ -33,7 +33,7 @@ const ManageProduct = () => {
       return;
     }
     let quantity = parseInt(product.quantity) - 1;
-    const url = `http://localhost:5000/inventory/${params.id}`;
+    const url = `https://stock-world-server.herokuapp.com/inventory/${params.id}`;
     try {
       axios.put(url, { quantity: quantity }).then((response) => {
         const { data } = response;
@@ -59,7 +59,7 @@ const ManageProduct = () => {
     }
     let quantity =
       parseInt(product?.quantity) + parseInt(event.target.quantity.value);
-    const url = `http://localhost:5000/inventory/${params.id}`;
+    const url = `https://stock-world-server.herokuapp.com/inventory/${params.id}`;
     if (parseInt(event.target.quantity.value) <= 0) {
       toast.error("Enter a positive number");
       return;
@@ -82,7 +82,13 @@ const ManageProduct = () => {
   };
   return (
     <section className="container mx-auto mt-10">
-      <div className="card lg:card-side bg-base-100 shadow-xl">
+      <div
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+        data-aos-once="true"
+        className="card lg:card-side bg-base-100 shadow-xl"
+      >
         <figure>
           <img src={product?.image} alt="Album" />
         </figure>
@@ -110,7 +116,14 @@ const ManageProduct = () => {
         </div>
       </div>
       {/* +++++++++++ */}
-      <div className="mt-20 card bg-base-100 shadow-xl mx-auto">
+      <div
+        data-aos="fade-left"
+        data-aos-anchor="#example-anchor"
+        data-aos-offset="500"
+        data-aos-duration="500"
+        data-aos-once="true"
+        className="mt-20 card bg-base-100 shadow-xl mx-auto"
+      >
         <div className="card-body items-center text-center">
           <h2 className="card-title">
             Update Stock Quantity for {product?.name}

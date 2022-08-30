@@ -5,7 +5,9 @@ import { InfinitySpin } from "react-loader-spinner";
 
 const HomeItems = () => {
   const { data: items, isLoading } = useQuery(["homeItems"], () =>
-    fetch("http://localhost:5000/inventory?size=6").then((res) => res.json())
+    fetch("https://stock-world-server.herokuapp.com/inventory?size=6").then(
+      (res) => res.json()
+    )
   );
 
   if (isLoading) {
@@ -21,6 +23,11 @@ const HomeItems = () => {
       <div className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items?.map((item) => (
           <div
+            data-aos="zoom-in-down"
+            data-aos-once="true"
+            data-aos-easing="linear"
+            data-aos-duration="1000"
+            data-aos-anchor-placement="top-bottom"
             key={item?._id}
             className="mx-auto card card-compact bg-base-200 shadow-lg"
           >

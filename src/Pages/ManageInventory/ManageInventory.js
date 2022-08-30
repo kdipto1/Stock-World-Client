@@ -11,7 +11,9 @@ const ManageInventory = () => {
     isLoading,
     refetch,
   } = useQuery(["manageInventory"], () =>
-    fetch("http://localhost:5000/inventory").then((res) => res.json())
+    fetch("https://stock-world-server.herokuapp.com/inventory").then((res) =>
+      res.json()
+    )
   );
   if (isLoading) {
     return (
@@ -26,7 +28,7 @@ const ManageInventory = () => {
     if (!verify) {
       return;
     } else {
-      const url = `http://localhost:5000/inventory/${id}`;
+      const url = `https://stock-world-server.herokuapp.com/inventory/${id}`;
       try {
         await axios.delete(url, { id }).then((response) => {
           const { data } = response;

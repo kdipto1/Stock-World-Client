@@ -35,7 +35,7 @@ const Login = () => {
     if (user || user1) {
       toast.success("Login Successful");
       // console.log(user1);
-      const url = "http://localhost:5000/login";
+      const url = "https://stock-world-server.herokuapp.com/login";
       axios
         .post(url, { email: user1?.email })
         .then((response) => {

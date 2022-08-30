@@ -28,7 +28,7 @@ const AddProduct = () => {
       image: image,
     };
     console.log(item);
-    const url = `http://localhost:5000/inventory/`;
+    const url = `https://stock-world-server.herokuapp.com/inventory/`;
     axios
       .post(url, item)
       .then(function (response) {
@@ -48,7 +48,10 @@ const AddProduct = () => {
     <section className="mt-10 container mx-auto">
       <div className="card  bg-base-100 shadow-xl image-full">
         <figure>
-          <img src="https://placeimg.com/400/225/arch" alt="Shoes" />
+          <img
+            src="https://images.unsplash.com/photo-1591405351990-4726e331f141?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            alt="graphics card"
+          />
         </figure>
         <div className="card-body items-center text-center">
           <h2 className="card-title">Add New Product:</h2>

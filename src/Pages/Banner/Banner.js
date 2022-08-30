@@ -18,7 +18,12 @@ const Banner = () => {
   };
 
   return (
-    <section className="">
+    <section
+      data-aos="zoom-in"
+      data-aos-once="true"
+      data-aos-duration="500"
+      data-aos-easing="linear"
+    >
       <Slider {...settings}>
         <div>
           <img className="w-full" src={cover} alt="" />

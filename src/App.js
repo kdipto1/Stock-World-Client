@@ -1,4 +1,4 @@
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./Pages/Header/Header";
 import Footer from "./Pages/Footer/Footer";
 import Home from "./Pages/Home/Home";
@@ -11,13 +11,18 @@ import ManageProduct from "./Pages/ManageProduct/ManageProduct";
 import { Toaster } from "react-hot-toast";
 import Register from "./Pages/Register/Register";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import MyProducts from "./Pages/MyProducts/MyProducts";
 import RequireAuth from "./Pages/RequireAuth/RequireAuth";
 import Blogs from "./Pages/Blogs/Blogs";
 
 function App() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
   return (
     <section>
       <Header />
@@ -58,7 +63,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/blogs" element={<Blogs/>} />
+        <Route path="/blogs" element={<Blogs />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
