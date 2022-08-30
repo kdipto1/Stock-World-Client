@@ -27,7 +27,6 @@ const Header = () => {
       </li>
     </>
   );
-  console.log(user);
   return (
     <div className="navbar  text-white  top-0 z-50 font-semibold">
       <div className="navbar-start">
@@ -129,7 +128,10 @@ const Header = () => {
             </ul>
           </div>
         ) : (
-          <NavLink className="btn btn-primary btn-circle" to="/login">
+          <NavLink
+            className="btn btn-primary btn-circle ring ring-primary"
+            to="/login"
+          >
             Login
           </NavLink>
         )}

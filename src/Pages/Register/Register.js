@@ -25,7 +25,7 @@ const Register = () => {
       navigate(from, { replace: true });
     }
   }, [error, from, loading, navigate, user]);
-  const handRegister = (event) => {
+  const handleRegister = (event) => {
     event.preventDefault();
     const email = event?.target?.email?.value;
     const password = event?.target?.password?.value;
@@ -42,7 +42,14 @@ const Register = () => {
             Please Register
           </h2>
           {/* +++++++ */}
-          <form onSubmit={handRegister}>
+          <form onSubmit={handleRegister}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              required
+              className="input input-bordered input-primary w-full max-w-xs my-4"
+            />
             <input
               type="email"
               name="email"

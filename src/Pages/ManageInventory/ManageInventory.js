@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { InfinitySpin } from "react-loader-spinner";
 
 const ManageInventory = () => {
   const {
@@ -13,23 +14,32 @@ const ManageInventory = () => {
     fetch("http://localhost:5000/inventory").then((res) => res.json())
   );
   if (isLoading) {
-    return;
+    return (
+      <div className="flex justify-center my-10">
+        <InfinitySpin width="200" color="#4fa94d" />
+      </div>
+    );
   }
   const deleteItem = async (id) => {
     console.log(id);
-    // const url = `http://localhost:5000/inventory/${id}`;
-    // try {
-    //   await axios.delete(url, { id }).then((response) => {
-    //     const { data } = response;
-    //     if (data) {
-    //       toast.success("Item Deleted");
-    //       refetch();
-    //     }
-    //   });
-    // } catch (error) {
-    //   toast.error(error.message);
-    //   console.log(error);
-    // }
+    const verify = window.confirm("Delete");
+    if (!verify) {
+      return;
+    } else {
+      const url = `http://localhost:5000/inventory/${id}`;
+      try {
+        await axios.delete(url, { id }).then((response) => {
+          const { data } = response;
+          if (data) {
+            toast.success("Item Deleted");
+            refetch(data);
+          }
+        });
+      } catch (error) {
+        toast.error(error.message);
+        console.log(error);
+      }
+    }
   };
   return (
     <section className="mt-6 container mx-auto">
@@ -52,53 +62,62 @@ const ManageInventory = () => {
               <th>Manage Product</th>
             </tr>
           </thead>
-          {inventoryItems?.map((item) => (
-            <tbody key={item?._id}>
-              <tr key={item._id} className="hover">
-                <td>{item?._id}</td>
+          {inventoryItems?.map((product) => (
+            <tbody key={product?._id}>
+              <tr key={product._id} className="hover">
+                <td>{product?._id}</td>
                 <td>
-                  <div className="tooltip" data-tip={item?.name}>
-                    {item?.name.slice(0, 30)}...
+                  <div className="tooltip" data-tip={product?.name}>
+                    {product?.name.slice(0, 30)}...
                   </div>
                 </td>
-                <td>{item?.quantity}</td>
-                <td>{item?.supplier}</td>
+                <td>{product?.quantity}</td>
+                <td>{product?.supplier}</td>
                 <td>
                   <img
                     className="w-24"
-                    src={item?.image}
+                    src={product?.image}
                     alt="Inventory product images"
                   />
                 </td>
-                <td key={item._id}>
+                <td key={product._id}>
                   <Link
-                    to={`/manageProduct/${item?._id}`}
+                    to={`/manageProduct/${product?._id}`}
                     className="btn btn-xs btn-primary"
                   >
                     Manage
                   </Link>{" "}
-                  <label
-                    key={item._id}
+                  <button
+                    className="btn btn-xs btn-warning"
+                    onClick={() => deleteItem(product?._id)}
+                  >
+                    Delete
+                  </button>
+                  {/* <label
+                    key={product._id}
                     htmlFor="my-modal-6"
                     className="btn btn-xs btn-warning"
                   >
                     Delete
                   </label>
                   <input
-                    key={item._id}
+                    key={product._id}
                     type="checkbox"
                     id="my-modal-6"
                     className="modal-toggle"
                   />
-                  <div key={item._id} className="modal modal-bottom sm:modal-middle">
-                    <div key={item._id} className="modal-box">
+                  <div
+                    key={product._id}
+                    className="modal modal-bottom sm:modal-middle"
+                  >
+                    <div key={product._id} className="modal-box">
                       <h3 className="font-bold text-lg">
                         Are you sure you want to delete?
                       </h3>
-                      <div key={item._id} className="modal-action">
+                      <div key={product._id} className="modal-action">
                         <label
-                          key={item._id}
-                          onClick={() => deleteItem(item?._id)}
+                          key={product._id}
+                          onClick={() => deleteItem(product?._id)}
                           htmlFor="my-modal-6"
                           className="btn btn-warning"
                         >
@@ -109,7 +128,7 @@ const ManageInventory = () => {
                         </label>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </td>
               </tr>
             </tbody>

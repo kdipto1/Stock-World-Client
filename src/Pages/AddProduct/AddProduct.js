@@ -46,7 +46,10 @@ const AddProduct = () => {
   };
   return (
     <section className="mt-10 container mx-auto">
-      <div className="card  bg-base-100 shadow-xl">
+      <div className="card  bg-base-100 shadow-xl image-full">
+        <figure>
+          <img src="https://placeimg.com/400/225/arch" alt="Shoes" />
+        </figure>
         <div className="card-body items-center text-center">
           <h2 className="card-title">Add New Product:</h2>
           <form onSubmit={addNewProduct}>

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { InfinitySpin } from "react-loader-spinner";
 
 const ManageProduct = () => {
   let params = useParams();
@@ -16,9 +17,12 @@ const ManageProduct = () => {
     )
   );
   if (isLoading) {
-    return;
+    return (
+      <div className="flex justify-center my-10">
+        <InfinitySpin width="200" color="#4fa94d" />
+      </div>
+    );
   }
-  console.log(product);
   /* Delivery Product function */
   const handleDelivery = (event) => {
     event.preventDefault();

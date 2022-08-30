@@ -5,42 +5,43 @@ const Blogs = () => {
     <section className="container mx-auto">
       <h2 className="text-4xl font-bold text-center mt-4">Blogs</h2>
       <div className="mt-4">
-        <div class="card card-compact w-96 bg-base-100 shadow-xl">
+        <div className="card card-compact w-96 bg-base-100 shadow-xl">
           <figure>
             <img
               src="https://images.unsplash.com/photo-1616401784845-180882ba9ba8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aW52ZW50b3J5fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
               alt="Shoes"
             />
           </figure>
-          <div class="card-body">
-            <h2 class="card-title">What is an inventory?</h2>
+          <div className="card-body">
+            <h2 className="card-title">What is an inventory?</h2>
             <p>
               The term inventory refers to the raw materials used in production
               as well as the goods produced that are available for sale. A
               company's inventory represents one of the most important assets it
               has because the turnover of inventory represents one of the
               primary sources of revenue generation and subsequent earnings for
-              the company's shareholders. 
+              the company's shareholders.
             </p>
             {/* ++++ */}
             <div className="card-actions justify-end">
-              <label for="my-modal-3" class="btn btn-primary modal-button ">
+              <label
+                htmlFor="my-modal-3"
+                className="btn btn-primary modal-button "
+              >
                 open full article
               </label>
             </div>
-            <input type="checkbox" id="my-modal-3" class="modal-toggle" />
-            <div class="modal">
-              <div class="modal-box relative">
+            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+            <div className="modal">
+              <div className="modal-box relative">
                 <label
-                  for="my-modal-3"
-                  class="btn btn-sm btn-primary btn-circle absolute right-2 top-2"
+                  htmlFor="my-modal-3"
+                  className="btn btn-sm btn-primary btn-circle absolute right-2 top-2"
                 >
                   ✕
                 </label>
-                <h3 class="text-lg font-bold">
-                  Inventory
-                </h3>
-                <p class="py-4">
+                <h3 className="text-lg font-bold">Inventory</h3>
+                <p className="py-4">
                   The term inventory refers to the raw materials used in
                   production as well as the goods produced that are available
                   for sale. A company's inventory represents one of the most
