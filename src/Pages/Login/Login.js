@@ -12,6 +12,7 @@ import {
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import axios from "axios";
+import { InfinitySpin } from "react-loader-spinner";
 
 const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -26,21 +27,19 @@ const Login = () => {
   let location = useLocation();
   let from = location.state?.from?.pathname || "/";
   useEffect(() => {
-    if (error || resetError) {
-      toast.error(error.message);
-    }
     if (loading || loading1) {
       return;
     }
     if (user || user1) {
       toast.success("Login Successful");
       // console.log(user1);
-      const url = "https://stock-world-server.herokuapp.com/login";
+      const url = "http://localhost:5000/login";
       axios
         .post(url, { email: user1?.email })
         .then((response) => {
           const { data } = response;
           localStorage.setItem("accessToken", data.token);
+          localStorage.setItem("email", user1?.email);
           // console.log(data);
           navigate(from, { replace: true });
         })
@@ -48,6 +47,9 @@ const Login = () => {
           toast.error(error.message);
           console.log(error);
         });
+    }
+    if (error || resetError) {
+      return toast.error(error.message);
     }
   }, [error, from, loading, navigate, user, user1, resetError, loading1]);
 

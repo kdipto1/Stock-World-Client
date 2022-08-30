@@ -28,7 +28,7 @@ const AddProduct = () => {
       image: image,
     };
     console.log(item);
-    const url = `https://stock-world-server.herokuapp.com/inventory/`;
+    const url = `http://localhost:5000/inventory/`;
     axios
       .post(url, item)
       .then(function (response) {

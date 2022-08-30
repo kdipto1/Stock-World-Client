@@ -11,14 +11,16 @@ import ManageProduct from "./Pages/ManageProduct/ManageProduct";
 import { Toaster } from "react-hot-toast";
 import Register from "./Pages/Register/Register";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import MyProducts from "./Pages/MyProducts/MyProducts";
 import RequireAuth from "./Pages/RequireAuth/RequireAuth";
 import Blogs from "./Pages/Blogs/Blogs";
+import { InfinitySpin } from "react-loader-spinner";
 
+const HomeComponent = React.lazy(() => import("./Pages/Home/Home.js"));
 function App() {
   useEffect(() => {
     AOS.init();
@@ -27,7 +29,21 @@ function App() {
     <section>
       <Header />
       <Routes>
-        <Route index path="/" element={<Home />} />
+        <Route
+          index
+          path="/"
+          element={
+            <Suspense>
+              <HomeComponent
+                fallback={
+                  <div className="flex justify-center my-10">
+                    <InfinitySpin width="200" color="#4fa94d" />
+                  </div>
+                }
+              />
+            </Suspense>
+          }
+        />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route
           path="/manageProduct/:id"

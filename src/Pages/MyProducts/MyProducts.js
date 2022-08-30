@@ -18,7 +18,7 @@ const MyProducts = () => {
     }
     const getMyItems = async () => {
       const email = user?.email;
-      const url = `https://stock-world-server.herokuapp.com/inventoryUser?email=${email}`;
+      const url = `http://localhost:5000/inventoryUser?email=${email}`;
       try {
         const { data } = await axios.get(url, {
           headers: {
@@ -31,8 +31,8 @@ const MyProducts = () => {
         setMyItems(data);
       } catch (error) {
         console.log(error);
-        if (error.response.status === 403) {
-          toast(error.response.data.message);
+        if (error?.response.status === 403) {
+          toast(error?.response.data.message);
           signOut(auth);
           navigate("/login");
         }
@@ -46,7 +46,7 @@ const MyProducts = () => {
     if (!verify) {
       return;
     } else {
-      const url = `https://stock-world-server.herokuapp.com/inventory/${id}`;
+      const url = `http://localhost:5000/inventory/${id}`;
       try {
         await axios.delete(url, { id }).then((response) => {
           const { data } = response;

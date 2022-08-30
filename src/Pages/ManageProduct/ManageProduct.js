@@ -12,7 +12,7 @@ const ManageProduct = () => {
     isLoading,
     refetch,
   } = useQuery(["manageProduct"], () =>
-    fetch(`https://stock-world-server.herokuapp.com/inventory/${params.id}`).then((res) =>
+    fetch(`http://localhost:5000/inventory/${params.id}`).then((res) =>
       res.json()
     )
   );
@@ -33,7 +33,7 @@ const ManageProduct = () => {
       return;
     }
     let quantity = parseInt(product.quantity) - 1;
-    const url = `https://stock-world-server.herokuapp.com/inventory/${params.id}`;
+    const url = `http://localhost:5000/inventory/${params.id}`;
     try {
       axios.put(url, { quantity: quantity }).then((response) => {
         const { data } = response;
@@ -59,7 +59,7 @@ const ManageProduct = () => {
     }
     let quantity =
       parseInt(product?.quantity) + parseInt(event.target.quantity.value);
-    const url = `https://stock-world-server.herokuapp.com/inventory/${params.id}`;
+    const url = `http://localhost:5000/inventory/${params.id}`;
     if (parseInt(event.target.quantity.value) <= 0) {
       toast.error("Enter a positive number");
       return;

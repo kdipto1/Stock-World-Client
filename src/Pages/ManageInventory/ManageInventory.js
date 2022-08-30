@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { InfinitySpin } from "react-loader-spinner";
+import { signOut } from "firebase/auth";
+import auth from "../../firebase.init";
 
 const ManageInventory = () => {
   const {
@@ -11,9 +13,13 @@ const ManageInventory = () => {
     isLoading,
     refetch,
   } = useQuery(["manageInventory"], () =>
-    fetch("https://stock-world-server.herokuapp.com/inventory").then((res) =>
-      res.json()
-    )
+    fetch("http://localhost:5000/inventory", {
+      headers: {
+        Authorization: `${localStorage.getItem("email")} ${localStorage.getItem(
+          "accessToken"
+        )}`,
+      },
+    }).then((res) => res.json())
   );
   if (isLoading) {
     return (
@@ -22,13 +28,19 @@ const ManageInventory = () => {
       </div>
     );
   }
+  if (inventoryItems?.status === 403) {
+    toast(inventoryItems?.message);
+    signOut(auth);
+    Navigate("/login");
+  }
+  // console.log(inventoryItems.status);
   const deleteItem = async (id) => {
     console.log(id);
     const verify = window.confirm("Delete");
     if (!verify) {
       return;
     } else {
-      const url = `https://stock-world-server.herokuapp.com/inventory/${id}`;
+      const url = `http://localhost:5000/inventory/${id}`;
       try {
         await axios.delete(url, { id }).then((response) => {
           const { data } = response;
@@ -47,11 +59,17 @@ const ManageInventory = () => {
     <section className="mt-6 container mx-auto">
       <h2 className="font-bold text-2xl text-center">Manage inventory</h2>
       <div className="text-center">
-        <Link to="/addProduct" className="btn my-4">
+        <Link
+          to="/addProduct"
+          className="btn btn-outline hover:btn-primary mt-4"
+        >
           Add New Product
         </Link>
       </div>
       {/* ++++++++++++++ */}
+      <h2 className="mb-2 font-bold">
+        Total Products: {inventoryItems?.length}
+      </h2>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
