@@ -4,6 +4,7 @@ import { signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
+import { InfinitySpin } from "react-loader-spinner";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 
@@ -38,8 +39,22 @@ const MyProducts = () => {
         }
       }
     };
+    if (loading) {
+      return (
+        <div className="flex justify-center my-10">
+          <InfinitySpin width="200" color="#4fa94d" />
+        </div>
+      );
+    }
     getMyItems();
-  }, [user, newItems, navigate, loading]);
+  }, [user, newItems, navigate, loading,myItems]);
+  if (!myItems) {
+    return (
+      <div className="flex justify-center my-10">
+        <InfinitySpin width="200" color="#4fa94d" />
+      </div>
+    );
+  }
 
   const deleteItem = async (id) => {
     const verify = window.confirm("Delete");

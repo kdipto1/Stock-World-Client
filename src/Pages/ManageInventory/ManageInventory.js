@@ -7,8 +7,8 @@ import { InfinitySpin } from "react-loader-spinner";
 import { signOut } from "firebase/auth";
 import auth from "../../firebase.init";
 
-const ManageInventory = () => {
-  const {
+const ManageInventory = async () => {
+   const {
     data: inventoryItems,
     isLoading,
     refetch,
@@ -29,6 +29,7 @@ const ManageInventory = () => {
     );
   }
   if (inventoryItems?.status === 403) {
+    // localStorage.removeItem("accessToken","email");
     toast(inventoryItems?.message);
     signOut(auth);
     Navigate("/login");
