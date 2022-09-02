@@ -7,14 +7,18 @@ import { InfinitySpin } from "react-loader-spinner";
 
 const ManageProduct = () => {
   let params = useParams();
+  const email = localStorage.getItem("email");
+  const accessToken = localStorage.getItem("accessToken");
   const {
     data: product,
     isLoading,
     refetch,
   } = useQuery(["manageProduct"], () =>
-    fetch(
-      `https://stock-world-server.herokuapp.com/inventory/${params.id}`
-    ).then((res) => res.json())
+    fetch(`https://stock-world-server.herokuapp.com/inventory/${params.id}`, {
+      headers: {
+        Authorization: `${email} ${accessToken}`,
+      },
+    }).then((res) => res.json())
   );
   if (isLoading) {
     return (
@@ -35,16 +39,26 @@ const ManageProduct = () => {
     let quantity = parseInt(product.quantity) - 1;
     const url = `https://stock-world-server.herokuapp.com/inventory/${params.id}`;
     try {
-      axios.put(url, { quantity: quantity }).then((response) => {
-        const { data } = response;
-        if (data) {
-          toast.success("Product Delivered", {
-            position: "top-right",
-            duration: "80",
-          });
-          refetch();
-        }
-      });
+      axios
+        .put(
+          url,
+          { quantity: quantity },
+          {
+            headers: {
+              Authorization: `${email} ${accessToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          const { data } = response;
+          if (data) {
+            toast.success("Product Delivered", {
+              position: "top-right",
+              duration: "80",
+            });
+            refetch();
+          }
+        });
     } catch (error) {
       console.log(error);
       toast.error(error?.message);
@@ -66,14 +80,24 @@ const ManageProduct = () => {
     }
     if (parseInt(event.target.quantity.value) >= 0) {
       try {
-        axios.put(url, { quantity: quantity }).then((response) => {
-          const { data } = response;
-          if (data) {
-            toast.success("Stock updated");
-            refetch();
-            event.target.reset();
-          }
-        });
+        axios
+          .put(
+            url,
+            { quantity: quantity },
+            {
+              headers: {
+                Authorization: `${email} ${accessToken}`,
+              },
+            }
+          )
+          .then((response) => {
+            const { data } = response;
+            if (data) {
+              toast.success("Stock updated");
+              refetch();
+              event.target.reset();
+            }
+          });
       } catch (error) {
         toast.error(error?.message);
         console.log(error);

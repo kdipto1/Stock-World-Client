@@ -9,52 +9,89 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 
 const MyProducts = () => {
-  const [user, loading, error] = useAuthState(auth);
-  const [myItems, setMyItems] = useState([]);
-  const [newItems, setNewItems] = useState([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (loading) {
-      return;
-    }
-    const getMyItems = async () => {
-      const email = user?.email;
-      const url = `https://stock-world-server.herokuapp.com/inventoryUser?email=${email}`;
-      try {
-        const { data } = await axios.get(url, {
+  const accessToken = localStorage.getItem("accessToken");
+  const email = localStorage.getItem("email");
+  const {
+    data: myItems,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useQuery(
+    ["myItems"],
+    async () =>
+      await fetch(
+        `https://stock-world-server.herokuapp.com/inventoryUser?email=${email}`,
+        {
           headers: {
-            Authorization: `${user?.email} ${localStorage.getItem(
-              "accessToken"
-            )}`,
+            Authorization: `${email} ${accessToken}`,
           },
-        });
-        console.log(data);
-        setMyItems(data);
-      } catch (error) {
-        console.log(error);
-        if (error?.response.status === 403) {
-          toast(error?.response.data.message);
-          signOut(auth);
-          navigate("/login");
         }
-      }
-    };
-    if (loading) {
-      return (
-        <div className="flex justify-center my-10">
-          <InfinitySpin width="200" color="#4fa94d" />
-        </div>
-      );
-    }
-    getMyItems();
-  }, [user, newItems, navigate, loading,myItems]);
-  if (!myItems) {
+      ).then((res) => res.json())
+  );
+
+  if (isLoading) {
     return (
       <div className="flex justify-center my-10">
         <InfinitySpin width="200" color="#4fa94d" />
       </div>
     );
   }
+  if (myItems?.status === 403) {
+    toast(myItems?.message);
+    signOut(auth);
+    navigate("/login");
+  }
+
+  console.log(myItems);
+
+  /* ++++++++++++++++++++++++++++++++ */
+  // const [user, loading, error] = useAuthState(auth);
+  // const [myItems, setMyItems] = useState([]);
+  // const [newItems, setNewItems] = useState([]);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (loading) {
+  //     return;
+  //   }
+  //   const getMyItems = async () => {
+  //     const email = user?.email;
+  //     const url = `https://stock-world-server.herokuapp.com/inventoryUser?email=${email}`;
+  //     try {
+  //       const { data } = await axios.get(url, {
+  //         headers: {
+  //           Authorization: `${user?.email} ${localStorage.getItem(
+  //             "accessToken"
+  //           )}`,
+  //         },
+  //       });
+  //       console.log(data);
+  //       setMyItems(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //       if (error?.response.status === 403) {
+  //         toast(error?.response.data.message);
+  //         signOut(auth);
+  //         navigate("/login");
+  //       }
+  //     }
+  //   };
+  //   if (loading) {
+  //     return (
+  //       <div className="flex justify-center my-10">
+  //         <InfinitySpin width="200" color="#4fa94d" />
+  //       </div>
+  //     );
+  //   }
+  //   getMyItems();
+  // }, [user, newItems, navigate, loading, myItems]);
+  // if (!myItems) {
+  //   return (
+  //     <div className="flex justify-center my-10">
+  //       <InfinitySpin width="200" color="#4fa94d" />
+  //     </div>
+  //   );
+  // }
 
   const deleteItem = async (id) => {
     const verify = window.confirm("Delete");
@@ -63,13 +100,23 @@ const MyProducts = () => {
     } else {
       const url = `https://stock-world-server.herokuapp.com/inventory/${id}`;
       try {
-        await axios.delete(url, { id }).then((response) => {
-          const { data } = response;
-          if (data) {
-            toast.success("Item Deleted");
-            setNewItems(data);
-          }
-        });
+        await axios
+          .delete(
+            url,
+            {
+              headers: {
+                Authorization: `${email} ${accessToken}`,
+              },
+            },
+            { id }
+          )
+          .then((response) => {
+            const { data } = response;
+            if (data) {
+              toast.success("Item Deleted");
+              refetch();
+            }
+          });
       } catch (error) {
         toast.error(error.message);
         console.log(error);

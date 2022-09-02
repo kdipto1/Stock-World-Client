@@ -5,22 +5,21 @@ import Home from "./Pages/Home/Home";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Login from "./Pages/Login/Login";
-import ManageInventory from "./Pages/ManageInventory/ManageInventory";
+// import ManageInventory from "./Pages/ManageInventory/ManageInventory";
 import NotFound from "./Pages/NotFound/NotFound";
 import ManageProduct from "./Pages/ManageProduct/ManageProduct";
 import { Toaster } from "react-hot-toast";
 import Register from "./Pages/Register/Register";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import AddProduct from "./Pages/AddProduct/AddProduct";
 import MyProducts from "./Pages/MyProducts/MyProducts";
 import RequireAuth from "./Pages/RequireAuth/RequireAuth";
 import Blogs from "./Pages/Blogs/Blogs";
-import { InfinitySpin } from "react-loader-spinner";
+import ManageInventory from "./Pages/ManageInventory/ManageInventory";
 
-const HomeComponent = React.lazy(() => import("./Pages/Home/Home.js"));
 function App() {
   useEffect(() => {
     AOS.init();
@@ -29,21 +28,7 @@ function App() {
     <section>
       <Header />
       <Routes>
-        <Route
-          index
-          path="/"
-          element={
-            <Suspense>
-              <HomeComponent
-                fallback={
-                  <div className="flex justify-center my-10">
-                    <InfinitySpin width="200" color="#4fa94d" />
-                  </div>
-                }
-              />
-            </Suspense>
-          }
-        />
+        <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route
           path="/manageProduct/:id"

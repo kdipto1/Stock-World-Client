@@ -1,26 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React, { useEffect } from "react";
-import toast from "react-hot-toast";
-import { Link, Navigate } from "react-router-dom";
 import { InfinitySpin } from "react-loader-spinner";
-import { signOut } from "firebase/auth";
-import auth from "../../firebase.init";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const ManageInventory = async () => {
-   const {
+const ManageInventory = () => {
+  const accessToken = localStorage.getItem("accessToken");
+  const email = localStorage.getItem("email");
+  const {
     data: inventoryItems,
+    isFetching,
     isLoading,
     refetch,
-  } = useQuery(["manageInventory"], () =>
-    fetch("https://stock-world-server.herokuapp.com/inventory", {
-      headers: {
-        Authorization: `${localStorage.getItem("email")} ${localStorage.getItem(
-          "accessToken"
-        )}`,
-      },
-    }).then((res) => res.json())
+  } = useQuery(
+    ["manageItems"],
+    async () =>
+      await fetch("https://stock-world-server.herokuapp.com/manageInventory", {
+        headers: {
+          Authorization: `${email} ${accessToken}`,
+        },
+      }).then((res) => res.json())
   );
+
   if (isLoading) {
     return (
       <div className="flex justify-center my-10">
@@ -28,13 +30,6 @@ const ManageInventory = async () => {
       </div>
     );
   }
-  if (inventoryItems?.status === 403) {
-    // localStorage.removeItem("accessToken","email");
-    toast(inventoryItems?.message);
-    signOut(auth);
-    Navigate("/login");
-  }
-  // console.log(inventoryItems.status);
   const deleteItem = async (id) => {
     console.log(id);
     const verify = window.confirm("Delete");
@@ -47,7 +42,7 @@ const ManageInventory = async () => {
           const { data } = response;
           if (data) {
             toast.success("Item Deleted");
-            refetch(data);
+            refetch();
           }
         });
       } catch (error) {
@@ -56,6 +51,8 @@ const ManageInventory = async () => {
       }
     }
   };
+  // console.log(items);
+  // console.log(email, accessToken);
   return (
     <section className="mt-6 container mx-auto">
       <h2 className="font-bold text-2xl text-center">Manage inventory</h2>
@@ -67,10 +64,9 @@ const ManageInventory = async () => {
           Add New Product
         </Link>
       </div>
-      {/* ++++++++++++++ */}
-      <h2 className="mb-2 font-bold">
+      {/* <h2 className="mb-2 font-bold">
         Total Products: {inventoryItems?.length}
-      </h2>
+      </h2> */}
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
@@ -84,79 +80,44 @@ const ManageInventory = async () => {
             </tr>
           </thead>
           {inventoryItems?.map((product) => (
-            <tbody key={product?._id}>
-              <tr key={product._id} className="hover">
-                <td>{product?._id}</td>
-                <td>
-                  <div className="tooltip" data-tip={product?.name}>
-                    {product?.name.slice(0, 30)}...
-                  </div>
-                </td>
-                <td>{product?.quantity}</td>
-                <td>{product?.supplier}</td>
-                <td>
-                  <img
-                    className="w-24"
-                    src={product?.image}
-                    alt="Inventory product images"
-                  />
-                </td>
-                <td key={product._id}>
-                  <Link
-                    to={`/manageProduct/${product?._id}`}
-                    className="btn btn-xs btn-primary"
-                  >
-                    Manage
-                  </Link>{" "}
-                  <button
-                    className="btn btn-xs btn-warning"
-                    onClick={() => deleteItem(product?._id)}
-                  >
-                    Delete
-                  </button>
-                  {/* <label
-                    key={product._id}
-                    htmlFor="my-modal-6"
-                    className="btn btn-xs btn-warning"
-                  >
-                    Delete
-                  </label>
-                  <input
-                    key={product._id}
-                    type="checkbox"
-                    id="my-modal-6"
-                    className="modal-toggle"
-                  />
-                  <div
-                    key={product._id}
-                    className="modal modal-bottom sm:modal-middle"
-                  >
-                    <div key={product._id} className="modal-box">
-                      <h3 className="font-bold text-lg">
-                        Are you sure you want to delete?
-                      </h3>
-                      <div key={product._id} className="modal-action">
-                        <label
-                          key={product._id}
-                          onClick={() => deleteItem(product?._id)}
-                          htmlFor="my-modal-6"
-                          className="btn btn-warning"
-                        >
-                          Yes
-                        </label>
-                        <label htmlFor="my-modal-6" className="btn btn-primary">
-                          No
-                        </label>
+                <tbody key={product?._id}>
+                  <tr className="hover">
+                    <td>{product?._id}</td>
+                    <td>
+                      <div className="tooltip" data-tip={product?.name}>
+                        {product?.name?.slice(0, 30)}...
                       </div>
-                    </div>
-                  </div> */}
-                </td>
-              </tr>
-            </tbody>
-          ))}
+                    </td>
+                    <td>{product?.quantity}</td>
+                    <td>{product?.supplier}</td>
+                    <td>
+                      <img
+                        loading="lazy"
+                        className="w-24"
+                        src={product?.image}
+                        alt="Inventory product images"
+                      />
+                    </td>
+                    <td>
+                      <Link
+                        to={`/manageProduct/${product?._id}`}
+                        className="btn btn-xs btn-primary"
+                      >
+                        Manage
+                      </Link>{" "}
+                      <button
+                        className="btn btn-xs btn-warning"
+                        onClick={() => deleteItem(product?._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              ))
+            }
         </table>
       </div>
-      {/* ++++++++++++++ */}
     </section>
   );
 };

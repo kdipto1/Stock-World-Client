@@ -6,6 +6,7 @@ import auth from "../../firebase.init";
 
 const AddProduct = () => {
   const [user, loading, error] = useAuthState(auth);
+
   if (loading) {
     return;
   }
@@ -28,9 +29,15 @@ const AddProduct = () => {
       image: image,
     };
     console.log(item);
+    const userEmail = localStorage.getItem("email");
+    const accessToken = localStorage.getItem("accessToken");
     const url = `https://stock-world-server.herokuapp.com/inventory/`;
     axios
-      .post(url, item)
+      .post(url, item, {
+        headers: {
+          Authorization: `${userEmail} ${accessToken}`,
+        },
+      })
       .then(function (response) {
         const { data } = response;
         console.log(data);
