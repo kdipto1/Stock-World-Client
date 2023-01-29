@@ -16,7 +16,7 @@ const ManageInventory = () => {
   } = useQuery(
     ["manageItems"],
     async () =>
-      await fetch("https://stock-world-server.herokuapp.com/manageInventory", {
+      await fetch("https://stock-world-server.onrender.com/manageInventory", {
         headers: {
           Authorization: `${email} ${accessToken}`,
         },
@@ -36,7 +36,7 @@ const ManageInventory = () => {
     if (!verify) {
       return;
     } else {
-      const url = `https://stock-world-server.herokuapp.com/inventory/${id}`;
+      const url = `https://stock-world-server.onrender.com/inventory/${id}`;
       try {
         await axios.delete(url, { id }).then((response) => {
           const { data } = response;
@@ -80,42 +80,41 @@ const ManageInventory = () => {
             </tr>
           </thead>
           {inventoryItems?.map((product) => (
-                <tbody key={product?._id}>
-                  <tr className="hover">
-                    <td>{product?._id}</td>
-                    <td>
-                      <div className="tooltip" data-tip={product?.name}>
-                        {product?.name?.slice(0, 30)}...
-                      </div>
-                    </td>
-                    <td>{product?.quantity}</td>
-                    <td>{product?.supplier}</td>
-                    <td>
-                      <img
-                        loading="lazy"
-                        className="w-24"
-                        src={product?.image}
-                        alt="Inventory product images"
-                      />
-                    </td>
-                    <td>
-                      <Link
-                        to={`/manageProduct/${product?._id}`}
-                        className="btn btn-xs btn-primary"
-                      >
-                        Manage
-                      </Link>{" "}
-                      <button
-                        className="btn btn-xs btn-warning"
-                        onClick={() => deleteItem(product?._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              ))
-            }
+            <tbody key={product?._id}>
+              <tr className="hover">
+                <td>{product?._id}</td>
+                <td>
+                  <div className="tooltip" data-tip={product?.name}>
+                    {product?.name?.slice(0, 30)}...
+                  </div>
+                </td>
+                <td>{product?.quantity}</td>
+                <td>{product?.supplier}</td>
+                <td>
+                  <img
+                    loading="lazy"
+                    className="w-24"
+                    src={product?.image}
+                    alt="Inventory product images"
+                  />
+                </td>
+                <td>
+                  <Link
+                    to={`/manageProduct/${product?._id}`}
+                    className="btn btn-xs btn-primary"
+                  >
+                    Manage
+                  </Link>{" "}
+                  <button
+                    className="btn btn-xs btn-warning"
+                    onClick={() => deleteItem(product?._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          ))}
         </table>
       </div>
     </section>

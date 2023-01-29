@@ -18,7 +18,7 @@ const SocialLogin = () => {
     if (user || user1) {
       toast.success("Login Successful");
       // console.log(user1);
-      const url = "https://stock-world-server.herokuapp.com/login";
+      const url = "https://stock-world-server.onrender.com/login";
       axios
         .post(url, { email: user?.email })
         .then((response) => {

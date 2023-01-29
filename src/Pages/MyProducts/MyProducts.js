@@ -21,7 +21,7 @@ const MyProducts = () => {
     ["myItems"],
     async () =>
       await fetch(
-        `https://stock-world-server.herokuapp.com/inventoryUser?email=${email}`,
+        `https://stock-world-server.onrender.com/inventoryUser?email=${email}`,
         {
           headers: {
             Authorization: `${email} ${accessToken}`,
@@ -56,7 +56,7 @@ const MyProducts = () => {
   //   }
   //   const getMyItems = async () => {
   //     const email = user?.email;
-  //     const url = `https://stock-world-server.herokuapp.com/inventoryUser?email=${email}`;
+  //     const url = `https://stock-world-server.onrender.com/inventoryUser?email=${email}`;
   //     try {
   //       const { data } = await axios.get(url, {
   //         headers: {
@@ -98,7 +98,7 @@ const MyProducts = () => {
     if (!verify) {
       return;
     } else {
-      const url = `https://stock-world-server.herokuapp.com/inventory/${id}`;
+      const url = `https://stock-world-server.onrender.com/inventory/${id}`;
       try {
         await axios
           .delete(

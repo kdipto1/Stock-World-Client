@@ -31,7 +31,7 @@ const AddProduct = () => {
     console.log(item);
     const userEmail = localStorage.getItem("email");
     const accessToken = localStorage.getItem("accessToken");
-    const url = `https://stock-world-server.herokuapp.com/inventory/`;
+    const url = `https://stock-world-server.onrender.com/inventory/`;
     axios
       .post(url, item, {
         headers: {
