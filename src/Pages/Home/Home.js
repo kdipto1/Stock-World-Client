@@ -1,5 +1,6 @@
 import React from "react";
 import Banner from "../Banner/Banner";
+import SwiperBanner from "../Banner/SwiperBanner";
 import HomeContact from "../HomeContact/HomeContact";
 import HomeItems from "../HomeItems/HomeItems";
 import HorizontalScroll from "../HorizontalScroll/HorizontalScroll";
@@ -8,6 +9,7 @@ const Home = () => {
   return (
     <main className="overflow-x-hidden">
       <Banner />
+      {/* <SwiperBanner/> */}
       <HomeItems />
       <HorizontalScroll />
       <HomeContact />

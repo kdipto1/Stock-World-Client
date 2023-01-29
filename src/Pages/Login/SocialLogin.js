@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import toast from "react-hot-toast";
 import axios from "axios";
 
 const SocialLogin = () => {
+  const [user1, loading1] = useAuthState(auth);
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   useEffect(() => {
-    if (user) {
+    if (loading1) {
+      return;
+    }
+    if (user || user1) {
       toast.success("Login Successful");
       // console.log(user1);
       const url = "https://stock-world-server.herokuapp.com/login";
@@ -20,7 +24,7 @@ const SocialLogin = () => {
         .then((response) => {
           const { data } = response;
           localStorage.setItem("accessToken", data.token);
-          localStorage.setItem("email", user?.email);
+          localStorage.setItem("email", user1?.email);
           // console.log(data);
           navigate(from, { replace: true });
         })

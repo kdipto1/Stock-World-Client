@@ -26,10 +26,20 @@ const Banner = () => {
     >
       <Slider {...settings}>
         <div>
-          <img className="w-full" src={cover} alt="" />
+          <img
+            // style={{ height: "60vh" }}
+            className="w-full"
+            src={cover}
+            alt=""
+          />
         </div>
         <div>
-          <img className="w-full" src={cover1} alt="" />
+          <img
+            // style={{ height: "85vh" }}
+            className="w-full"
+            src={cover1}
+            alt=""
+          />
         </div>
       </Slider>
     </section>

@@ -140,7 +140,8 @@ const Header = () => {
                   onClick={() =>
                     signOut(
                       auth,
-                      localStorage.removeItem("accessToken","email"),
+                      localStorage.removeItem("accessToken"),
+                      localStorage.removeItem("email"),
                       toast.success("SignOut Successful")
                     )
                   }
