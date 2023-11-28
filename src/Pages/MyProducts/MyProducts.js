@@ -17,9 +17,9 @@ const MyProducts = () => {
     isFetching,
     isLoading,
     refetch,
-  } = useQuery(
-    ["myItems"],
-    async () =>
+  } = useQuery({
+    queryKey: ["myItems"],
+    queryFn: async () =>
       await fetch(
         `https://stock-world-server.onrender.com/inventoryUser?email=${email}`,
         {
@@ -27,8 +27,8 @@ const MyProducts = () => {
             Authorization: `${email} ${accessToken}`,
           },
         }
-      ).then((res) => res.json())
-  );
+      ).then((res) => res.json()),
+  });
 
   if (isLoading) {
     return (

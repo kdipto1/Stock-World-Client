@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import { InfinitySpin } from "react-loader-spinner";
 
 const HomeItems = () => {
-  const { data: items, isLoading } = useQuery(["homeItems"], () =>
-    fetch("https://stock-world-server.onrender.com/homeInventory").then((res) =>
-      res.json()
-    )
-  );
+  const { data: items, isLoading } = useQuery({
+    queryKey: ["homeItems"],
+    queryFn: () =>
+      fetch("https://stock-world-server.onrender.com/homeInventory").then(
+        (res) => res.json()
+      ),
+  });
 
   if (isLoading) {
     return (

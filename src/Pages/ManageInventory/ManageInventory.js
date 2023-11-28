@@ -13,15 +13,15 @@ const ManageInventory = () => {
     isFetching,
     isLoading,
     refetch,
-  } = useQuery(
-    ["manageItems"],
-    async () =>
+  } = useQuery({
+    queryKey: ["manageItems"],
+    queryFn: async () =>
       await fetch("https://stock-world-server.onrender.com/manageInventory", {
         headers: {
           Authorization: `${email} ${accessToken}`,
         },
-      }).then((res) => res.json())
-  );
+      }).then((res) => res.json()),
+  });
 
   if (isLoading) {
     return (
