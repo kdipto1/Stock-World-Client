@@ -128,10 +128,13 @@ const Header = () => {
             </label>
             <ul
               tabIndex="0"
-              className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+              className="menu z-10 dropdown-content p-2  shadow bg-base-100 rounded-box w-52 mt-4 border-zinc-50 border-2"
             >
               <li>
-                <NavLink className="btn hover:btn-primary" to="/myProducts">
+                <NavLink
+                  className="btn hover:btn-primary mb-1"
+                  to="/myProducts"
+                >
                   My Product
                 </NavLink>
               </li>

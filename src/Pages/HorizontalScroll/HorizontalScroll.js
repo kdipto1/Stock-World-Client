@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import "./HorizontalScroll.css";
+import "react-horizontal-scrolling-menu/dist/styles.css";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import RightArrowIcon from "../../Images/Icons/right-arrow.png";
 import LeftArrowIcon from "../../Images/Icons/left-arrow.png";
@@ -53,10 +54,10 @@ const HorizontalScroll = () => {
         <h2 className="text-4xl font-bold text-center text-primary">
           Valuable Partners
         </h2>
-        <ScrollMenu className="" LeftArrow={LeftArrow} RightArrow={RightArrow}>
+        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
           {images.map((image, index) => (
-            <div key={index} className="w-64 p-10">
-              <img  src={image} alt="" />
+            <div key={index} className="w-64 p-10 inline-block">
+              <img src={image} alt="" />
             </div>
           ))}
         </ScrollMenu>
