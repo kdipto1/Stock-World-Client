@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { signOut } from "firebase/auth";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React from "react";
 import toast from "react-hot-toast";
 import { InfinitySpin } from "react-loader-spinner";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 
 const MyProducts = () => {
@@ -14,7 +13,6 @@ const MyProducts = () => {
   const email = localStorage.getItem("email");
   const {
     data: myItems,
-    isFetching,
     isLoading,
     refetch,
   } = useQuery({

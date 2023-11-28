@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import auth from "../../firebase.init";
 
 const Header = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   if (loading) {
     return (
       <div className="flex justify-center">

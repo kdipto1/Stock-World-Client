@@ -39,7 +39,7 @@ const SocialLogin = () => {
     if (error) {
       toast.error(error?.message);
     }
-  }, [from, user, navigate, error, loading]);
+  }, [from, user, navigate, error, loading, loading1, user1]);
   return (
     <section>
       <button
