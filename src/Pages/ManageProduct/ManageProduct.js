@@ -13,13 +13,15 @@ const ManageProduct = () => {
     data: product,
     isLoading,
     refetch,
-  } = useQuery(["manageProduct"], () =>
-    fetch(`https://stock-world-server.onrender.com/inventory/${params.id}`, {
-      headers: {
-        Authorization: `${email} ${accessToken}`,
-      },
-    }).then((res) => res.json())
-  );
+  } = useQuery({
+    queryKey: ["manageProduct"],
+    queryFn: () =>
+      fetch(`https://stock-world-server.onrender.com/inventory/${params.id}`, {
+        headers: {
+          Authorization: `${email} ${accessToken}`,
+        },
+      }).then((res) => res.json()),
+  });
   if (isLoading) {
     return (
       <div className="flex justify-center my-10">

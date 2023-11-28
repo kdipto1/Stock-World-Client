@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { InfinitySpin } from "react-loader-spinner";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -10,18 +10,17 @@ const ManageInventory = () => {
   const email = localStorage.getItem("email");
   const {
     data: inventoryItems,
-    isFetching,
     isLoading,
     refetch,
-  } = useQuery(
-    ["manageItems"],
-    async () =>
+  } = useQuery({
+    queryKey: ["manageItems"],
+    queryFn: async () =>
       await fetch("https://stock-world-server.onrender.com/manageInventory", {
         headers: {
           Authorization: `${email} ${accessToken}`,
         },
-      }).then((res) => res.json())
-  );
+      }).then((res) => res.json()),
+  });
 
   if (isLoading) {
     return (
