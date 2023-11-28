@@ -1,11 +1,11 @@
-import axios from "axios";
 import React from "react";
+import axios from "axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import auth from "../../firebase.init";
 
 const AddProduct = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   if (loading) {
     return;

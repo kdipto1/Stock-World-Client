@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useRef } from "react";
 import SocialLogin from "./SocialLogin";
 import login1 from "../../Images/Login/login1.svg";
@@ -6,21 +7,20 @@ import { sendEmailVerification } from "firebase/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   useAuthState,
-  useSendEmailVerification,
+  // useSendEmailVerification,
   useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import axios from "axios";
-import { InfinitySpin } from "react-loader-spinner";
 
 const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sending, resetError] =
     useSendPasswordResetEmail(auth);
-  const [sendEmailVerification, verifySending, verifyError] =
-    useSendEmailVerification(auth);
+  // const [sendEmailVerification, verifySending, verifyError] =
+  //   useSendEmailVerification(auth);
   const [user1, loading1] = useAuthState(auth);
   const emailRef = useRef("");
   let navigate = useNavigate();
