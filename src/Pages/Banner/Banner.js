@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import cover from "../../Images/Cover/cover.png";
-import cover1 from "../../Images/Cover/cover1.png";
+import cover from "../../Images/Cover/cover.webp";
+import cover1 from "../../Images/Cover/cover1.webp";
 
 const Banner = () => {
   const settings = {

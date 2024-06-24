@@ -9,7 +9,6 @@ const Home = () => {
   return (
     <main className="overflow-x-hidden">
       <Banner />
-      {/* <SwiperBanner/> */}
       <HomeItems />
       <HorizontalScroll />
       <HomeContact />
