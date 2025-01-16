@@ -18,12 +18,7 @@ const Banner = () => {
   };
 
   return (
-    <section
-      data-aos="zoom-in"
-      data-aos-once="true"
-      data-aos-duration="500"
-      data-aos-easing="linear"
-    >
+    <section>
       <Slider {...settings}>
         <div>
           <img
@@ -31,6 +26,7 @@ const Banner = () => {
             className="w-full"
             src={cover}
             alt=""
+            fetchPriority="high"
           />
         </div>
         <div>
@@ -39,6 +35,7 @@ const Banner = () => {
             className="w-full"
             src={cover1}
             alt=""
+            fetchPriority="high"
           />
         </div>
       </Slider>

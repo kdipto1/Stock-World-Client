@@ -28,7 +28,7 @@ const AddProduct = () => {
       description: description,
       image: image,
     };
-    console.log(item);
+
     const userEmail = localStorage.getItem("email");
     const accessToken = localStorage.getItem("accessToken");
     const url = `https://stock-world-server.onrender.com/inventory/`;
@@ -114,8 +114,8 @@ const AddProduct = () => {
             <textarea
               name="description"
               required
-              cols="40"
-              rows="6"
+              cols={40}
+              rows={6}
               placeholder="product description"
               className="textarea textarea-primary my-4"
             ></textarea>

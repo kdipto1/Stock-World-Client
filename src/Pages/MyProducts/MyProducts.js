@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { signOut } from "firebase/auth";
@@ -40,8 +41,6 @@ const MyProducts = () => {
     signOut(auth);
     navigate("/login");
   }
-
-  console.log(myItems);
 
   /* ++++++++++++++++++++++++++++++++ */
   // const [user, loading, error] = useAuthState(auth);

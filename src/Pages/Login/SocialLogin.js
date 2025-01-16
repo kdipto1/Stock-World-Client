@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
@@ -20,10 +21,12 @@ const SocialLogin = () => {
       // console.log(user1);
       const url = "https://stock-world-server.onrender.com/login";
       axios
+        // @ts-ignore
         .post(url, { email: user?.email })
         .then((response) => {
           const { data } = response;
           localStorage.setItem("accessToken", data.token);
+          // @ts-ignore
           localStorage.setItem("email", user1?.email);
           // console.log(data);
           navigate(from, { replace: true });

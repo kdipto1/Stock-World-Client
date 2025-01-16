@@ -4,7 +4,6 @@ import contact from "../../Images/Login/contact.svg";
 const HomeContact = () => {
   return (
     <section className="mt-16 container mx-auto">
-      {/* <h2 className="text-4xl font-bold text-center">Contact Us</h2> */}
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <figure>
           <img src={contact} alt="Album" />
@@ -33,7 +32,7 @@ const HomeContact = () => {
               placeholder="Your Message"
             ></textarea>
             <br />
-            <div className="text-center">
+            <div className="text-start">
               <input
                 className="btn btn-primary btn-wide mt-2 "
                 type="submit"
