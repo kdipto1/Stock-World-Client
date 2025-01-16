@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { InfinitySpin } from "react-loader-spinner";
 import { useQuery } from "@tanstack/react-query";
@@ -30,7 +31,6 @@ const ManageInventory = () => {
     );
   }
   const deleteItem = async (id) => {
-    console.log(id);
     const verify = window.confirm("Delete");
     if (!verify) {
       return;

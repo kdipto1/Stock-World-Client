@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { Navigate, useLocation } from "react-router-dom";
 import auth from "../../firebase.init";
 
+// @ts-ignore
 const RequireAuth = ({ children }) => {
   const [user, loading] = useAuthState(auth);
   const location = useLocation();

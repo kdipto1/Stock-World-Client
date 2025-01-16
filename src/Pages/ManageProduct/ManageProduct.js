@@ -34,7 +34,7 @@ const ManageProduct = () => {
     event.preventDefault();
     if (product.quantity <= 0) {
       toast.loading("Product not available. Please Restock!", {
-        duration: "80",
+        duration: 80,
       });
       return;
     }
@@ -56,7 +56,7 @@ const ManageProduct = () => {
           if (data) {
             toast.success("Product Delivered", {
               position: "top-right",
-              duration: "80",
+              duration: 80,
             });
             refetch();
           }
@@ -70,7 +70,7 @@ const ManageProduct = () => {
     event.preventDefault();
     if (!event.target.quantity.value) {
       toast("Please put the quantity", {
-        duration: "80",
+        duration: 80,
       });
     }
     let quantity =
