@@ -2,12 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { InfinitySpin } from "react-loader-spinner";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import { useState } from "react";
 
 const ManageProduct = () => {
   let params = useParams();
   const email = localStorage.getItem("email");
   const accessToken = localStorage.getItem("accessToken");
+  const [isDelivering, setIsDelivering] = useState(false);
+  const [isRestocking, setIsRestocking] = useState(false);
+  const [restockQuantity, setRestockQuantity] = useState('');
+  
   const {
     data: product,
     isLoading,
@@ -21,150 +26,111 @@ const ManageProduct = () => {
         },
       }).then((res) => res.json()),
   });
+  
   if (isLoading) {
-    return (
-      <div className="flex justify-center my-10">
-        <InfinitySpin width="200" color="#4fa94d" />
-      </div>
-    );
+    return <LoadingSpinner message="Loading product details..." />;
   }
-  /* Delivery Product function */
-  const handleDelivery = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelivery = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    
     if (product.quantity <= 0) {
-      toast.loading("Product not available. Please Restock!", {
-        duration: 80,
-      });
+      toast.error("Product not available. Please restock!");
       return;
     }
-    let quantity = parseInt(product.quantity) - 1;
+    
+    setIsDelivering(true);
+    const quantity = parseInt(product.quantity) - 1;
     const url = `https://stock-world-server.onrender.com/inventory/${params.id}`;
+    
     try {
-      axios
-        .put(
-          url,
-          { quantity: quantity },
-          {
-            headers: {
-              Authorization: `${email} ${accessToken}`,
-            },
-          }
-        )
-        .then((response) => {
-          const { data } = response;
-          if (data) {
-            toast.success("Product Delivered", {
-              position: "top-right",
-              duration: 80,
-            });
-            refetch();
-          }
-        });
+      const response = await axios.put(
+        url,
+        { quantity: quantity },
+        {
+          headers: {
+            Authorization: `${email} ${accessToken}`,
+          },
+        }
+      );
+      
+      if (response.data) {
+        toast.success("Product delivered successfully!");
+        refetch();
+      }
     } catch (error) {
-      console.log(error);
-      toast.error((error as any)?.message);
+      console.error(error);
+      toast.error((error as any)?.response?.data?.message || "Failed to deliver product");
+    } finally {
+      setIsDelivering(false);
     }
   };
-  const handleRestock = (event: React.FormEvent<HTMLFormElement>) => {
+  
+  const handleRestock = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const target = event.target as HTMLFormElement;
-    if (!(target.quantity as HTMLInputElement).value) {
-      toast("Please put the quantity", {
-        duration: 80,
-      });
-    }
-    let quantity =
-      parseInt(product?.quantity) + parseInt((target.quantity as HTMLInputElement).value);
-    const url = `https://stock-world-server.onrender.com/inventory/${params.id}`;
-    if (parseInt((target.quantity as HTMLInputElement).value) <= 0) {
-      toast.error("Enter a positive number");
+    
+    if (!restockQuantity || parseInt(restockQuantity) <= 0) {
+      toast.error("Please enter a valid positive quantity");
       return;
     }
-    if (parseInt((target.quantity as HTMLInputElement).value) >= 0) {
-      try {
-        axios
-          .put(
-            url,
-            { quantity: quantity },
-            {
-              headers: {
-                Authorization: `${email} ${accessToken}`,
-              },
-            }
-          )
-          .then((response) => {
-            const { data } = response;
-            if (data) {
-              toast.success("Stock updated");
-              refetch();
-              target.reset();
-            }
-          });
-      } catch (error) {
-        toast.error((error as any)?.message);
-        console.log(error);
+    
+    setIsRestocking(true);
+    const quantity = parseInt(product?.quantity) + parseInt(restockQuantity);
+    const url = `https://stock-world-server.onrender.com/inventory/${params.id}`;
+    
+    try {
+      const response = await axios.put(
+        url,
+        { quantity: quantity },
+        {
+          headers: {
+            Authorization: `${email} ${accessToken}`,
+          },
+        }
+      );
+      
+      if (response.data) {
+        toast.success("Stock updated successfully!");
+        refetch();
+        setRestockQuantity('');
       }
+    } catch (error) {
+      console.error(error);
+      toast.error((error as any)?.response?.data?.message || "Failed to update stock");
+    } finally {
+      setIsRestocking(false);
     }
   };
   return (
-    <section className="container mx-auto mt-10">
-      <div
-        data-aos="fade-right"
-        data-aos-offset="300"
-        data-aos-easing="ease-in-sine"
-        data-aos-once="true"
-        className="card lg:card-side bg-base-100 shadow-xl"
-      >
-        <figure>
-          <img src={product?.image} alt="Album" />
-        </figure>
-        <div className="card-body my-auto">
-          <p className="card-title">{product?.name}</p>
-          <p className="">
-            <span className="font-bold">Product Id:</span> {product?._id}
-          </p>
-          <p>
-            <span className="font-bold">Description:</span>{" "}
-            {product?.description}
-          </p>
-          <p className="">
-            <span className="font-bold">Product Price:</span> {product?.price}$
-          </p>
-          <p>
-            <span className="font-bold">Product Quantity:</span>{" "}
-            <span className="">{product?.quantity}</span>
-          </p>
-          <div className="card-actions justify-end">
-            <button onClick={handleDelivery} className="btn">
-              Deliver
-            </button>
-          </div>
+<section className="container mx-auto mt-10 space-y-8">
+      <div className="flex flex-col md:flex-row bg-white rounded-lg shadow md:space-x-4 overflow-hidden">
+        <img src={product?.image} alt="Product" className="w-full md:w-1/3 object-cover" />
+        <div className="p-4 flex flex-col space-y-2 justify-center">
+          <h2 className="text-xl font-semibold">{product?.name}</h2>
+          <p>Product Id: <span className="text-gray-600">{product?._id}</span></p>
+          <p>{product?.description}</p>
+          <p>Price: <span className="font-semibold">${product?.price}</span></p>
+          <p>Quantity: <span className="font-semibold">{product?.quantity}</span></p>
+          <button onClick={handleDelivery} className="btn btn-primary mt-4">
+            Deliver
+          </button>
         </div>
       </div>
-      {/* +++++++++++ */}
-      <div
-        data-aos="fade-left"
-        data-aos-anchor="#example-anchor"
-        data-aos-offset="500"
-        data-aos-duration="500"
-        data-aos-once="true"
-        className="mt-20 card bg-base-100 shadow-xl mx-auto"
-      >
-        <div className="card-body items-center text-center">
-          <h2 className="card-title">
-            Update Stock Quantity for {product?.name}
-          </h2>
-          <form onSubmit={handleRestock}>
-            <input
-              className="input input-bordered input-primary w-full max-w-xs"
-              type="number"
-              placeholder="update stock"
-              name="quantity"
-            />
-            <br />
-            <input className="btn mt-4" type="submit" value="Update Stock" />
-          </form>
-        </div>
+      <div className="bg-white rounded-lg shadow p-4">
+        <h2 className="text-center text-lg font-medium mb-4">
+          Update Stock for {product?.name}
+        </h2>
+        <form onSubmit={handleRestock} className="flex flex-col items-center space-y-4">
+          <input
+            className="input input-bordered w-full max-w-xs"
+            type="number"
+            value={restockQuantity}
+            onChange={(e) => setRestockQuantity(e.target.value)}
+            placeholder="Enter new quantity"
+          />
+          <button type="submit" className="btn btn-primary">
+            Update Stock
+          </button>
+        </form>
       </div>
     </section>
   );

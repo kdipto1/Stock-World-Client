@@ -71,54 +71,76 @@ const Login = () => {
     }
   };
   return (
-    <section className="h-screen container mx-auto mt-20">
-      <div className="card lg:card-side bg-base-100 shadow-xl mx-auto">
-        <figure>
-          <img className="" src={login1} alt="Album" />
+    <section className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center p-4">
+      <div className="card lg:card-side bg-base-100 shadow-2xl max-w-4xl w-full">
+        <figure className="lg:w-1/2">
+          <img className="object-cover w-full h-full" src={login1} alt="Login illustration" />
         </figure>
-        <div className="card-body my-auto text-center">
-          <h2 className="card-title text-2xl font-bold mx-auto">
-            Please Login
-          </h2>
-          {/* +++++++ */}
-          <form onSubmit={handleLogin}>
-            <input
-              name="email"
-              type="email"
-              ref={emailRef}
-              placeholder="Your Email"
-              required
-              className="input input-bordered input-primary w-full max-w-xs"
-            />
-            <br />
-            <input
-              type="password"
-              name="password"
-              placeholder="Your Password"
-              required
-              className="input input-bordered input-primary w-full max-w-xs my-4"
-            />
-            <br />
-            <input
-              type="submit"
-              value="Login"
-              className="btn hover:btn-primary btn-wide mt-2"
-            />
+        <div className="card-body lg:w-1/2 justify-center">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-primary mb-2">
+              Welcome Back!
+            </h2>
+            <p className="text-base-content/70">Please sign in to your account</p>
+          </div>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Email</span>
+              </label>
+              <input
+                name="email"
+                type="email"
+                ref={emailRef}
+                placeholder="Enter your email"
+                required
+                className="input input-bordered input-primary w-full focus:input-primary"
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Password</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                className="input input-bordered input-primary w-full focus:input-primary"
+              />
+            </div>
+            
+            <div className="form-control mt-6">
+              <button
+                type="submit"
+                className="btn btn-primary w-full hover:shadow-lg transition-all"
+              >
+                Sign In
+              </button>
+            </div>
           </form>
-          <h1>
-            Don't have an account, Please{" "}
-            <Link className="text-primary" to="/register">
-              Register
-            </Link>{" "}
-          </h1>
-          <h1 className="">
-            Forget password?{" "}
-            <span className="text-primary" onClick={resetPassword}>
-              Reset Password
-            </span>
-          </h1>
-          {/* +++++++ */}
-          <div className="divider">OR</div>
+          
+          <div className="text-center mt-4 space-y-2">
+            <p className="text-sm text-base-content/70">
+              Don't have an account?{" "}
+              <Link className="text-primary hover:text-primary-focus font-medium" to="/register">
+                Create Account
+              </Link>
+            </p>
+            <p className="text-sm">
+              Forgot your password?{" "}
+              <button 
+                className="text-primary hover:text-primary-focus font-medium" 
+                onClick={resetPassword}
+              >
+                Reset Password
+              </button>
+            </p>
+          </div>
+          
+          <div className="divider text-base-content/50">OR</div>
           <SocialLogin />
         </div>
       </div>

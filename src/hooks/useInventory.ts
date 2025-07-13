@@ -108,12 +108,80 @@ export const useInventoryHooks = () => {
 };
 
 // Export individual hooks for convenience
-export const {
-  useHomeItems,
-  useAllItems,
-  useItemById,
-  useUserItems,
-  useCreateItem,
-  useUpdateItem,
-  useDeleteItem,
-} = useInventoryHooks();
+export const useHomeItems = () => {
+  return useQuery({
+    queryKey: INVENTORY_KEYS.home,
+    queryFn: inventoryService.getHomeItems,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+};
+
+export const useAllItems = () => {
+  return useQuery({
+    queryKey: INVENTORY_KEYS.all,
+    queryFn: inventoryService.getAllItems,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+};
+
+export const useItemById = (id: string) => {
+  return useQuery({
+    queryKey: INVENTORY_KEYS.item(id),
+    queryFn: () => inventoryService.getItemById(id),
+    enabled: !!id,
+  });
+};
+
+export const useUserItems = (email: string) => {
+  return useQuery({
+    queryKey: INVENTORY_KEYS.userItems(email),
+    queryFn: () => inventoryService.getUserItems(email),
+    enabled: !!email,
+  });
+};
+
+export const useCreateItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: inventoryService.createItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
+      toast.success('Item created successfully');
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to create item');
+    },
+  });
+};
+
+export const useUpdateItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) => inventoryService.updateItem(id, data),
+    onSuccess: (_data: any, variables: { id: string; data: any }) => {
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.item(variables.id) });
+      toast.success('Item updated successfully');
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to update item');
+    },
+  });
+};
+
+export const useDeleteItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: inventoryService.deleteItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
+      toast.success('Item deleted successfully');
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to delete item');
+    },
+  });
+};
