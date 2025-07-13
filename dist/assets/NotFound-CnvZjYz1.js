@@ -1,0 +1,2 @@
+import{j as t}from"./index-m1II4a16.js";import"./vendor-CiyiiN1J.js";const s="/assets/found-B43YNOkb.png",n=()=>t.jsx("section",{className:"container mx-auto",children:t.jsxs("div",{className:"",children:[t.jsx("h2",{className:"text-center font-bold text-4xl my-4",children:"Page Not Found"}),t.jsx("img",{className:"w-fit mx-auto",src:s,alt:"page not found"})]})});export{n as default};
+//# sourceMappingURL=NotFound-CnvZjYz1.js.map
