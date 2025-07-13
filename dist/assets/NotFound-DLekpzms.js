@@ -1,2 +1,0 @@
-import{j as t}from"./index-oGEXg8xX.js";import"./vendor-Du-depLi.js";const s="/assets/found-B43YNOkb.png",n=()=>t.jsx("section",{className:"container mx-auto",children:t.jsxs("div",{className:"",children:[t.jsx("h2",{className:"text-center font-bold text-4xl my-4",children:"Page Not Found"}),t.jsx("img",{className:"w-fit mx-auto",src:s,alt:"page not found"})]})});export{n as default};
-//# sourceMappingURL=NotFound-DLekpzms.js.map

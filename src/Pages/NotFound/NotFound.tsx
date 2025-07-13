@@ -1,24 +1,19 @@
-import found from '../../Images/Utility/found.png';
+import { Link } from "react-router-dom";
+import notFound from "../../Images/Utility/found.png";
+
 const NotFound = () => {
   return (
-    <section className="flex items-center h-screen p-16 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-      <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-        <div className="max-w-md text-center">
-          <h2 className="text-9xl font-extrabold dark:text-gray-600">
-            404
-          </h2>
-          <h2 className="text-2xl font-semibold md:text-3xl">
-            Sorry, we couldn't find this page.
-          </h2>
-          <p className="mt-4 mb-8 text-gray-600 dark:text-gray-300">
-            But don't worry, you can find plenty of other things on our homepage.
+    <section className="min-h-screen bg-base-200 flex items-center justify-center">
+      <div className="container mx-auto px-4">
+        <div className="max-w-md text-center mx-auto">
+          <img src={notFound} alt="Not Found" className="w-64 mx-auto mb-8" />
+          <h1 className="text-4xl font-bold">Page Not Found</h1>
+          <p className="opacity-70 mt-4">
+            The page you are looking for does not exist.
           </p>
-          <a
-            href="/"
-            className="px-8 py-3 font-semibold rounded bg-primary text-gray-50 hover:bg-primary-focus"
-          >
-            Back to Homepage
-          </a>
+          <Link to="/" className="btn btn-primary mt-8">
+            Go to Homepage
+          </Link>
         </div>
       </div>
     </section>
