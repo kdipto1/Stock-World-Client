@@ -27,7 +27,7 @@ export const useInventoryHooks = () => {
   const useAllItems = () => {
     return useQuery({
       queryKey: INVENTORY_KEYS.all,
-      queryFn: inventoryService.getAllItems,
+      queryFn: () => inventoryService.getAllItems(),
       staleTime: 2 * 60 * 1000, // 2 minutes
     });
   };
@@ -59,7 +59,7 @@ export const useInventoryHooks = () => {
         queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
         toast.success('Item created successfully');
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast.error(error.message || 'Failed to create item');
       },
     });
@@ -75,7 +75,7 @@ export const useInventoryHooks = () => {
         queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.item(variables.id) });
         toast.success('Item updated successfully');
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast.error(error.message || 'Failed to update item');
       },
     });
@@ -90,7 +90,7 @@ export const useInventoryHooks = () => {
         queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
         toast.success('Item deleted successfully');
       },
-      onError: (error) => {
+      onError: (error: any) => {
         toast.error(error.message || 'Failed to delete item');
       },
     });
@@ -119,7 +119,7 @@ export const useHomeItems = () => {
 export const useAllItems = () => {
   return useQuery({
     queryKey: INVENTORY_KEYS.all,
-    queryFn: inventoryService.getAllItems,
+    queryFn: () => inventoryService.getAllItems(),
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 };
@@ -149,7 +149,7 @@ export const useCreateItem = () => {
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
       toast.success('Item created successfully');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(error.message || 'Failed to create item');
     },
   });
@@ -165,7 +165,7 @@ export const useUpdateItem = () => {
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.item(variables.id) });
       toast.success('Item updated successfully');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(error.message || 'Failed to update item');
     },
   });
@@ -180,7 +180,7 @@ export const useDeleteItem = () => {
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.home });
       toast.success('Item deleted successfully');
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(error.message || 'Failed to delete item');
     },
   });

@@ -1,5 +1,13 @@
-import httpClient from './httpClient';
-import { getEndpoint } from '../config/api';
+import httpClient from "./httpClient";
+import { ENDPOINTS } from "../config/api";
+
+interface GetAllItemsParams {
+  page?: number;
+  limit?: number;
+  sortBy?: "name" | "price" | "quantity" | "createdAt" | "updatedAt";
+  sortOrder?: "asc" | "desc";
+  category?: string;
+}
 
 export const inventoryService = {
   /**
@@ -7,27 +15,20 @@ export const inventoryService = {
    * @returns {Promise<Array>} Home inventory items
    */
   async getHomeItems() {
-    try {
-      const url = getEndpoint('INVENTORY', 'HOME');
-      const response = await httpClient.get(url);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await httpClient.get(ENDPOINTS.INVENTORY.HOME);
+    return response;
   },
 
   /**
-   * Get all inventory items (protected)
-   * @returns {Promise<Array>} All inventory items
+   * Get all inventory items with pagination, sorting, and filtering (protected)
+   * @param {GetAllItemsParams} params - Query parameters
+   * @returns {Promise<{data: Array, meta: Object}>} Paginated inventory items
    */
-  async getAllItems() {
-    try {
-      const url = getEndpoint('INVENTORY', 'ALL');
-      const response = await httpClient.get(url);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+  async getAllItems(params?: GetAllItemsParams) {
+    const response = await httpClient.get(ENDPOINTS.INVENTORY.ALL, {
+      params,
+    });
+    return response;
   },
 
   /**
@@ -36,13 +37,10 @@ export const inventoryService = {
    * @returns {Promise<Object>} Inventory item
    */
   async getItemById(id: string) {
-    try {
-      const url = getEndpoint('INVENTORY', 'BY_ID').replace(':id', id);
-      const response = await httpClient.get(url);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await httpClient.get(
+      ENDPOINTS.INVENTORY.BY_ID.replace(":id", id)
+    );
+    return response;
   },
 
   /**
@@ -51,13 +49,11 @@ export const inventoryService = {
    * @returns {Promise<Object>} Created item
    */
   async createItem(itemData: any) {
-    try {
-      const url = getEndpoint('INVENTORY', 'CREATE');
-      const response = await httpClient.post(url, itemData);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await httpClient.post(
+      ENDPOINTS.INVENTORY.CREATE,
+      itemData
+    );
+    return response;
   },
 
   /**
@@ -67,13 +63,11 @@ export const inventoryService = {
    * @returns {Promise<Object>} Updated item
    */
   async updateItem(id: string, updateData: any) {
-    try {
-      const url = getEndpoint('INVENTORY', 'BY_ID').replace(':id', id);
-      const response = await httpClient.put(url, updateData);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await httpClient.put(
+      ENDPOINTS.INVENTORY.BY_ID.replace(":id", id),
+      updateData
+    );
+    return response;
   },
 
   /**
@@ -82,13 +76,10 @@ export const inventoryService = {
    * @returns {Promise<Object>} Deletion result
    */
   async deleteItem(id: string) {
-    try {
-      const url = getEndpoint('INVENTORY', 'BY_ID').replace(':id', id);
-      const response = await httpClient.delete(url);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await httpClient.delete(
+      ENDPOINTS.INVENTORY.BY_ID.replace(":id", id)
+    );
+    return response;
   },
 
   /**
@@ -97,14 +88,10 @@ export const inventoryService = {
    * @returns {Promise<Array>} User's inventory items
    */
   async getUserItems(email: string) {
-    try {
-      const url = getEndpoint('INVENTORY', 'USER_ITEMS');
-      const response = await httpClient.get(url, {
-        params: { email }
-      });
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await httpClient.get(ENDPOINTS.INVENTORY.USER_ITEMS, {
+      params: { email },
+    });
+    console.log(response);
+    return response;
   },
 };

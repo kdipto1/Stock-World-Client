@@ -1,56 +1,47 @@
 // @ts-ignore
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { GoogleAuthProvider, signInWithPopup, getIdToken } from "firebase/auth";
 import auth from "../../firebase.init";
 import toast from "react-hot-toast";
-import axios from "axios";
+import { authService } from "../../services/authService";
 
 const SocialLogin = () => {
-  const [user1, loading1] = useAuthState(auth);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  let from = location.state?.from?.pathname || "/";
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  useEffect(() => {
-    if (loading1) {
-      return;
+  const from = location.state?.from?.pathname || "/";
+
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      const idToken = await getIdToken(result.user);
+
+      const data = await authService.socialLogin({ idToken });
+      // The authService already handles token storage, so we don't need to duplicate it
+      if (result.user?.email) {
+        localStorage.setItem("email", result.user.email);
+      }
+
+      toast.success("Google login successful!");
+      navigate(from, { replace: true });
+    } catch (error) {
+      toast.error("Google login failed");
+    } finally {
+      setLoading(false);
     }
-    if (user || user1) {
-      toast.success("Login Successful");
-      // console.log(user1);
-      const url = "https://stock-world-server.onrender.com/login";
-      axios
-        // @ts-ignore
-        .post(url, { email: user?.email })
-        .then((response) => {
-          const { data } = response;
-          localStorage.setItem("accessToken", data.token);
-          // @ts-ignore
-          localStorage.setItem("email", user1?.email);
-          // console.log(data);
-          navigate(from, { replace: true });
-        })
-        .catch(function (error) {
-          toast.error(error.message);
-          console.log(error);
-        });
-    }
-    if (loading) {
-      return;
-    }
-    if (error) {
-      toast.error(error?.message);
-    }
-  }, [from, user, navigate, error, loading, loading1, user1]);
+  };
   return (
     <section className="w-full">
       <button
-        onClick={() => signInWithGoogle()}
-        disabled={loading || loading1}
+        onClick={handleGoogleLogin}
+        disabled={loading}
         className="btn btn-outline btn-primary w-full gap-2 hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading || loading1 ? (
+        {loading ? (
           <div className="animate-spin rounded-full h-5 w-5 border-2 border-gray-200 border-t-primary"></div>
         ) : (
           <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -72,7 +63,7 @@ const SocialLogin = () => {
             />
           </svg>
         )}
-        {loading || loading1 ? 'Signing in...' : 'Continue with Google'}
+        {loading ? "Signing in..." : "Continue with Google"}
       </button>
     </section>
   );

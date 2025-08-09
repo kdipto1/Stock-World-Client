@@ -11,13 +11,26 @@ import { User } from "firebase/auth";
 const NavLinks = () => (
   <>
     <li>
-      <NavLink to="/manageInventory">Manage Inventory</NavLink>
+      <NavLink to="/dashboard" className={({ isActive }) => isActive ? "active" : ""}>
+        Dashboard
+      </NavLink>
     </li>
     <li>
-      <NavLink to="/addProduct">Add Product</NavLink>
+      <NavLink to="/manageInventory" className={({ isActive }) => isActive ? "active" : ""}>
+        <span className="hidden sm:inline">Manage Inventory</span>
+        <span className="sm:hidden">Inventory</span>
+      </NavLink>
     </li>
     <li>
-      <NavLink to="/blogs">Blogs</NavLink>
+      <NavLink to="/addProduct" className={({ isActive }) => isActive ? "active" : ""}>
+        <span className="hidden sm:inline">Add Product</span>
+        <span className="sm:hidden">Add</span>
+      </NavLink>
+    </li>
+    <li>
+      <NavLink to="/blogs" className={({ isActive }) => isActive ? "active" : ""}>
+        Blogs
+      </NavLink>
     </li>
   </>
 );

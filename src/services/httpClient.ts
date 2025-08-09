@@ -1,26 +1,24 @@
-import axios from 'axios';
-import { API_CONFIG, getBaseUrl } from '../config/api';
+import axios from "axios";
+import { API_CONFIG } from "../config/api";
 
-// Create axios instance
+// Create axios instance with centralized baseURL
 const httpClient = axios.create({
+  baseURL: API_CONFIG.BASE_URL,
   timeout: API_CONFIG.TIMEOUT,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 // Request interceptor
 httpClient.interceptors.request.use(
   (config) => {
-    // Set base URL dynamically based on feature flag
-    config.baseURL = getBaseUrl();
-    
     // Add authorization header if token exists
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     return config;
   },
   (error) => {
@@ -31,41 +29,58 @@ httpClient.interceptors.request.use(
 // Response interceptor
 httpClient.interceptors.response.use(
   (response) => {
-    // Handle new API response format
-    if (API_CONFIG.USE_NEW_API) {
-      // New API returns { success, message, data }
-      if (response.data && response.data.success) {
-        return response.data.data;
+    // New API returns { success, message, data, meta? }
+    if (response.data && response.data.success) {
+      // Return full response for endpoints that include meta (like pagination)
+      if (response.data.meta) {
+        return response.data;
       }
-      return response.data;
-    } else {
-      // Old API returns data directly
-      return response.data;
+      // Return just data for simple responses
+      return response.data.data;
     }
+    return response.data;
   },
   (error) => {
-    // Handle different error formats
+    // Handle error responses
     if (error.response) {
       const { status, data } = error.response;
-      
+
       // Handle unauthorized errors
       if (status === 401) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('email');
-        window.location.href = '/login';
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("email");
+        // Only redirect if not already on login page
+        if (!window.location.pathname.includes("/login")) {
+          window.location.href = "/login";
+        }
+        return Promise.reject(new Error("Authentication required"));
       }
-      
-      // Extract error message based on API version
-      let errorMessage = 'An error occurred';
-      if (API_CONFIG.USE_NEW_API) {
-        errorMessage = data?.message || errorMessage;
-      } else {
-        errorMessage = data?.message || error.message || errorMessage;
+
+      // Extract error message and validation errors
+      let errorMessage = "An error occurred";
+      let validationErrors = null;
+
+      if (data) {
+        errorMessage = data.message || errorMessage;
+        validationErrors = data.errors || null;
       }
-      
-      return Promise.reject(new Error(errorMessage));
+
+      const customError = new Error(errorMessage) as any;
+      customError.validationErrors = validationErrors;
+      customError.status = status;
+
+      return Promise.reject(customError);
     }
-    
+
+    // Network error or other errors
+    if (error.code === "NETWORK_ERROR" || !error.response) {
+      const networkError = new Error(
+        "Network error. Please check your connection."
+      ) as any;
+      networkError.isNetworkError = true;
+      return Promise.reject(networkError);
+    }
+
     return Promise.reject(error);
   }
 );

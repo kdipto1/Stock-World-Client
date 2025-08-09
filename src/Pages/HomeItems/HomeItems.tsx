@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ProductCard from "../../components/ProductCard";
 import { IInventoryItem } from "../../types";
+import { inventoryService } from "../../services/inventoryService";
 
 const HomeItems = () => {
   const { data: items, isLoading } = useQuery<IInventoryItem[]>({
     queryKey: ["homeItems"],
-    queryFn: () =>
-      fetch("https://stock-world-server.onrender.com/homeInventory").then(
-        (res) => res.json()
-      ),
+    queryFn: async () => {
+      // httpClient unwraps response to data
+      const data = await inventoryService.getHomeItems();
+      console.log(data.data);
+      return data as unknown as IInventoryItem[];
+    },
   });
 
   if (isLoading) {

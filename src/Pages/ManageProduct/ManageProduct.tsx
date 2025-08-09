@@ -1,50 +1,47 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { IInventoryItem } from "../../types";
+import { inventoryService } from "../../services/inventoryService";
 import { useState } from "react";
 
 const ManageProduct = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const email = localStorage.getItem("email");
-  const accessToken = localStorage.getItem("accessToken");
   const [restockQuantity, setRestockQuantity] = useState("");
 
   const { data: product, isLoading } = useQuery<IInventoryItem>({
     queryKey: ["manageProduct", id],
-    queryFn: () =>
-      fetch(`https://stock-world-server.onrender.com/inventory/${id}`, {
-        headers: {
-          Authorization: `${email} ${accessToken}`,
-        },
-      }).then((res) => res.json()),
-    enabled: !!id && !!email && !!accessToken,
+    queryFn: async () => {
+      if (!id) throw new Error("Product ID is required");
+      const response = await inventoryService.getItemById(id);
+      return response.data;
+    },
+    enabled: !!id,
+    staleTime: 300000, // 5 minutes
   });
 
   const updateQuantityMutation = useMutation({
     mutationFn: (newQuantity: number) => {
-      const url = `https://stock-world-server.onrender.com/inventory/${id}`;
-      return axios.put(
-        url,
-        { quantity: newQuantity },
-        {
-          headers: {
-            Authorization: `${email} ${accessToken}`,
-          },
-        }
-      );
+      if (!id) throw new Error("Product ID is required");
+      return inventoryService.updateItem(id, { quantity: newQuantity });
     },
     onSuccess: () => {
       toast.success("Product quantity updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["manageProduct", id] });
+      queryClient.invalidateQueries({ queryKey: ["manageItems"] });
+      queryClient.invalidateQueries({ queryKey: ["myItems"] });
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Failed to update product quantity"
-      );
+      // Handle Zod validation errors from server
+      if (error.validationErrors) {
+        error.validationErrors.forEach((err: any) => {
+          toast.error(`${err.field}: ${err.message}`);
+        });
+      } else {
+        toast.error(error.message || "Failed to update product quantity");
+      }
     },
   });
 
@@ -88,22 +85,22 @@ const ManageProduct = () => {
               />
             </figure>
             <div className="card-body lg:w-1/2">
-              <h2 className="card-title text-3xl">{product.name}</h2>
+              <h2 className="card-title text-2xl sm:text-3xl">{product.name}</h2>
               <p className="text-sm opacity-50">ID: {product._id}</p>
-              <p>{product.description}</p>
-              <div className="flex justify-between items-center my-4">
-                <p className="text-xl font-bold">Price: ${product.price}</p>
-                <p className="text-xl font-bold">
+              <p className="text-sm sm:text-base">{product.description}</p>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center my-4 gap-2">
+                <p className="text-lg sm:text-xl font-bold">Price: ${product.price}</p>
+                <p className="text-lg sm:text-xl font-bold">
                   Quantity: {product.quantity}
                 </p>
               </div>
               <div className="card-actions justify-end">
                 <button
                   onClick={handleDelivery}
-                  className="btn btn-primary"
-                  disabled={updateQuantityMutation.isPending}
+                  className="btn btn-primary w-full sm:w-auto"
+                  disabled={updateQuantityMutation.isPending || product.quantity === 0}
                 >
-                  Deliver
+                  {updateQuantityMutation.isPending ? "Processing..." : "Deliver"}
                 </button>
               </div>
             </div>
@@ -112,20 +109,22 @@ const ManageProduct = () => {
           <div className="card bg-base-100 shadow-lg mt-8">
             <div className="card-body">
               <h2 className="card-title">Restock Item</h2>
-              <form onSubmit={handleRestock} className="flex gap-4">
+              <form onSubmit={handleRestock} className="flex flex-col sm:flex-row gap-4">
                 <input
                   type="number"
                   value={restockQuantity}
                   onChange={(e) => setRestockQuantity(e.target.value)}
                   placeholder="Enter quantity"
                   className="input input-bordered w-full"
+                  min="1"
+                  required
                 />
                 <button
                   type="submit"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary w-full sm:w-auto"
                   disabled={updateQuantityMutation.isPending}
                 >
-                  Restock
+                  {updateQuantityMutation.isPending ? "Restocking..." : "Restock"}
                 </button>
               </form>
             </div>

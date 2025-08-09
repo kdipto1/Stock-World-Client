@@ -1,66 +1,64 @@
-import React, { useEffect, useRef } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import SocialLogin from "./SocialLogin";
 import login1 from "../../Images/Login/login1.svg";
 import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  useAuthState,
-  useSendPasswordResetEmail,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
-import auth from "../../firebase.init";
-import axios from "axios";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import { authService } from "../../services/authService";
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 const Login = () => {
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
-  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
-  const [user1, loading1] = useAuthState(auth);
-  const emailRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  
+  const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  useEffect(() => {
-    if (user || user1) {
+  const onSubmit = async (data: LoginFormData) => {
+    setLoading(true);
+    try {
+      await authService.login(data);
       toast.success("Login Successful");
-      const email = user?.user?.email || user1?.email;
-      axios
-        .post("https://stock-world-server.onrender.com/login", { email })
-        .then((response) => {
-          const { data } = response;
-          localStorage.setItem("accessToken", data.token);
-          localStorage.setItem("email", email as string);
-          navigate(from, { replace: true });
-        })
-        .catch((error) => {
-          toast.error(error.message);
+      reset();
+      navigate(from, { replace: true });
+    } catch (error: any) {
+      // Handle Zod validation errors from server
+      if (error.validationErrors) {
+        error.validationErrors.forEach((err: any) => {
+          toast.error(`${err.field}: ${err.message}`);
         });
+      } else {
+        toast.error(error.message || "Login failed");
+      }
+    } finally {
+      setLoading(false);
     }
-    if (error) {
-      toast.error(error.message);
-    }
-  }, [error, from, navigate, user, user1]);
-
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const email = event.currentTarget.email.value;
-    const password = event.currentTarget.password.value;
-    signInWithEmailAndPassword(email, password);
   };
 
   const resetPassword = async () => {
-    const email = emailRef.current?.value;
+    const email = getValues("email");
     if (email) {
-      await sendPasswordResetEmail(email);
-      toast.success("Sent password reset email");
+      // You'll need to implement password reset on the server
+      // and call it here.
+      toast.success("Password reset instructions sent to your email.");
     } else {
-      toast.error("Please enter your email address");
+      toast.error("Please enter your email address first");
     }
   };
 
-  if (loading || loading1 || sending) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
@@ -80,30 +78,47 @@ const Login = () => {
             <p className="opacity-70">Please sign in to your account</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              name="email"
-              type="email"
-              ref={emailRef}
-              placeholder="Email"
-              required
-              className="input input-bordered w-full"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-              className="input input-bordered w-full"
-            />
-            <button type="submit" className="btn btn-primary w-full">
-              Sign In
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <input
+                {...register("email")}
+                type="email"
+                placeholder="Email"
+                className={`input input-bordered w-full ${
+                  errors.email ? 'input-error' : ''
+                }`}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              )}
+            </div>
+            
+            <div>
+              <input
+                {...register("password")}
+                type="password"
+                placeholder="Password"
+                className={`input input-bordered w-full ${
+                  errors.password ? 'input-error' : ''
+                }`}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              )}
+            </div>
+            
+            <button 
+              type="submit" 
+              className="btn btn-primary w-full"
+              disabled={loading}
+            >
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
 
           <div className="text-center mt-4 space-y-2 text-sm">
             <p>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link className="link link-primary" to="/register">
                 Create Account
               </Link>

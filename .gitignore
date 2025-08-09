@@ -19,6 +19,13 @@
 .env.test.local
 .env.production.local
 repomix-server-code-output.xml
+INTEGRATION_ASSESSMENT.md
+MIGRATION_GUIDE.md
+DEVELOPMENT-plan.md
+TODO.md
+
+# build outputs
+dist/
 
 npm-debug.log*
 yarn-debug.log*

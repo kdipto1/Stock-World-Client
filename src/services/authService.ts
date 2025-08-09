@@ -1,51 +1,55 @@
 import httpClient from './httpClient';
-import { getEndpoint } from '../config/api';
+import { ENDPOINTS } from '../config/api';
+
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
 
 export const authService = {
-  /**
-   * Login user and get access token
-   * @param {Object} credentials - User credentials
-   * @param {string} credentials.email - User email
-   * @returns {Promise<Object>} Login response with token
-   */
-  async login(credentials: any) {
-    try {
-      const url = getEndpoint('AUTH', 'LOGIN');
-      const response = await httpClient.post(url, credentials);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+  async register(userData: RegisterData) {
+    const response = await httpClient.post(ENDPOINTS.USER.CREATE, userData);
+    return response;
   },
 
-  /**
-   * Logout user
-   */
+  async login(credentials: LoginData) {
+    // httpClient unwraps successful responses without meta to data payload
+    const data = await httpClient.post(ENDPOINTS.AUTH.LOGIN, credentials);
+    if ((data as any)?.token) {
+      localStorage.setItem('accessToken', (data as any).token);
+      localStorage.setItem('email', credentials.email);
+    }
+    return data;
+  },
+
+  async socialLogin(payload: { idToken: string }) {
+    // httpClient unwraps to { token }
+    const data = await httpClient.post(ENDPOINTS.AUTH.SOCIAL_LOGIN, payload);
+    if ((data as any)?.token) {
+      localStorage.setItem('accessToken', (data as any).token);
+    }
+    return data;
+  },
+
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('email');
   },
 
-  /**
-   * Get stored access token
-   * @returns {string|null} Access token
-   */
   getAccessToken() {
     return localStorage.getItem('accessToken');
   },
 
-  /**
-   * Get stored user email
-   * @returns {string|null} User email
-   */
   getUserEmail() {
     return localStorage.getItem('email');
   },
 
-  /**
-   * Check if user is authenticated
-   * @returns {boolean} Authentication status
-   */
   isAuthenticated() {
     return !!this.getAccessToken();
   },

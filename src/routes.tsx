@@ -27,7 +27,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: "/dashboard",
-    ...createLazyComponent(() => import("./Pages/Dashboard/Dashboard")),
+    ...createLazyComponent(() => import("./Pages/Dashboard/Dashboard"), true),
   },
   {
     path: "/manageProduct/:id",
