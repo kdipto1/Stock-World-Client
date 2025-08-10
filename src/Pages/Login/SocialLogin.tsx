@@ -20,7 +20,7 @@ const SocialLogin = () => {
 
       const idToken = await getIdToken(result.user);
 
-      const data = await authService.socialLogin({ idToken });
+      await authService.socialLogin({ idToken });
       // The authService already handles token storage, so we don't need to duplicate it
       if (result.user?.email) {
         localStorage.setItem("email", result.user.email);
