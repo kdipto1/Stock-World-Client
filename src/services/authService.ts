@@ -24,6 +24,9 @@ export const authService = {
     if ((data as any)?.token) {
       localStorage.setItem('accessToken', (data as any).token);
       localStorage.setItem('email', credentials.email);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('auth-changed'));
+      }
     }
     return data;
   },
@@ -40,6 +43,9 @@ export const authService = {
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('email');
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('auth-changed'));
+    }
   },
 
   getAccessToken() {

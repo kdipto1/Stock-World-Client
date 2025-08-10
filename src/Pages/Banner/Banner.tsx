@@ -20,14 +20,16 @@ const Banner = () => {
     {
       image: cover,
       title: "Streamline Your Inventory Management",
-      subtitle: "Take control of your stock with powerful analytics and real-time tracking.",
+      subtitle:
+        "Take control of your stock with powerful analytics and real-time tracking.",
       cta: "Get Started",
-      link: "/register",
+      link: "/manageInventory",
     },
     {
       image: cover1,
       title: "Boost Your Business Efficiency",
-      subtitle: "Optimize your inventory operations with our comprehensive management system.",
+      subtitle:
+        "Optimize your inventory operations with our comprehensive management system.",
       cta: "Learn More",
       link: "/about",
     },
