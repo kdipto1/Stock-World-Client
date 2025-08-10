@@ -1,5 +1,6 @@
 import httpClient from "./httpClient";
 import { ENDPOINTS } from "../config/api";
+import { IInventoryItem } from "../types";
 
 interface GetAllItemsParams {
   page?: number;
@@ -14,9 +15,9 @@ export const inventoryService = {
    * Get home page inventory items (public)
    * @returns {Promise<Array>} Home inventory items
    */
-  async getHomeItems() {
-    const response = await httpClient.get(ENDPOINTS.INVENTORY.HOME);
-    return response;
+  async getHomeItems(): Promise<IInventoryItem[]> {
+    const response = await httpClient.get<IInventoryItem[]>(ENDPOINTS.INVENTORY.HOME);
+    return response as unknown as IInventoryItem[];
   },
 
   /**
@@ -24,11 +25,16 @@ export const inventoryService = {
    * @param {GetAllItemsParams} params - Query parameters
    * @returns {Promise<{data: Array, meta: Object}>} Paginated inventory items
    */
-  async getAllItems(params?: GetAllItemsParams) {
-    const response = await httpClient.get(ENDPOINTS.INVENTORY.ALL, {
-      params,
-    });
-    return response;
+  async getAllItems(
+    params?: GetAllItemsParams
+  ): Promise<{ data: IInventoryItem[]; meta: any }> {
+    const response = await httpClient.get<{ data: IInventoryItem[]; meta: any }>(
+      ENDPOINTS.INVENTORY.ALL,
+      {
+        params,
+      }
+    );
+    return response as unknown as { data: IInventoryItem[]; meta: any };
   },
 
   /**
@@ -36,11 +42,11 @@ export const inventoryService = {
    * @param {string} id - Item ID
    * @returns {Promise<Object>} Inventory item
    */
-  async getItemById(id: string) {
-    const response = await httpClient.get(
+  async getItemById(id: string): Promise<IInventoryItem> {
+    const response = await httpClient.get<IInventoryItem>(
       ENDPOINTS.INVENTORY.BY_ID.replace(":id", id)
     );
-    return response;
+    return response as unknown as IInventoryItem;
   },
 
   /**
@@ -87,11 +93,13 @@ export const inventoryService = {
    * @param {string} email - User email
    * @returns {Promise<Array>} User's inventory items
    */
-  async getUserItems(email: string) {
-    const response = await httpClient.get(ENDPOINTS.INVENTORY.USER_ITEMS, {
-      params: { email },
-    });
-    console.log(response);
-    return response;
+  async getUserItems(email: string): Promise<IInventoryItem[]> {
+    const response = await httpClient.get<IInventoryItem[]>(
+      ENDPOINTS.INVENTORY.USER_ITEMS,
+      {
+        params: { email },
+      }
+    );
+    return response as unknown as IInventoryItem[];
   },
 };

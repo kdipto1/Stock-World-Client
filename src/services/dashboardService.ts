@@ -18,7 +18,8 @@ export const dashboardService = {
    * @returns {Promise<DashboardStats>} Dashboard statistics
    */
   async getDashboardStats(): Promise<DashboardStats> {
-    const response = await httpClient.get(ENDPOINTS.DASHBOARD.STATS);
-    return response.data; // return only the data part of the response
+    const response = await httpClient.get<DashboardStats>(ENDPOINTS.DASHBOARD.STATS);
+    // httpClient interceptor already unwraps data
+    return response as unknown as DashboardStats;
   },
 };

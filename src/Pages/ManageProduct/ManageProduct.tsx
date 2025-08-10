@@ -16,7 +16,7 @@ const ManageProduct = () => {
     queryFn: async () => {
       if (!id) throw new Error("Product ID is required");
       const response = await inventoryService.getItemById(id);
-      return response.data;
+      return response;
     },
     enabled: !!id,
     staleTime: 300000, // 5 minutes

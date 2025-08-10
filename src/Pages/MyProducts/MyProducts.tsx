@@ -88,7 +88,7 @@ const MyProducts = () => {
         throw new Error("User email not found");
       }
       const res = await inventoryService.getUserItems(email);
-      return res.data;
+      return res;
     },
     enabled: !!email,
   });
