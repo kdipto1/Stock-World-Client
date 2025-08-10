@@ -11,7 +11,7 @@ const HomeItems = () => {
     queryFn: async () => {
       // httpClient unwraps response to data
       const data = await inventoryService.getHomeItems();
-      console.log(data.data);
+
       return data as unknown as IInventoryItem[];
     },
   });
